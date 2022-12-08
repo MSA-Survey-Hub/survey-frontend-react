@@ -31,7 +31,7 @@ import ReactImg_2 from 'src/assets/images/test5.jpeg';
 import axios from 'axios';
 import usePromise from 'src/lib/usePromise';
 import apiConfig from 'src/lib/apiConfig.js';
-가
+
 const ClickParticipateBtn = () => {
   const [visible, setVisible] = useState(false)
   return (
