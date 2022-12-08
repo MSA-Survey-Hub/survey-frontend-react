@@ -26,6 +26,10 @@ import axios from "axios";
 import apiConfig from 'src/lib/apiConfig';
 import moment from 'moment';
 import usePromise from 'src/lib/usePromise';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import Loading from 'src/lib/Loading/Loading';
+
 
 const SurveySearchList = () => {
   const current = decodeURI(window.location.href);
@@ -33,6 +37,21 @@ const SurveySearchList = () => {
   const params = new URLSearchParams(search);
   const nowPage = params.get('page') ? params.get('page') : 1;
 
+
+  // 카테고리 리스트
+  let categoryOptionList = [];
+  const animatedComponents = makeAnimated();
+  const [cloading, cresponse, cerror] = usePromise(() => {
+  return axios.get(apiConfig.surveyCategorySelectList)
+  }, []);
+  if(cresponse != null){
+    cresponse.data.map((option) => {
+      categoryOptionList.push({ value: option.surCatId, label: option.content });
+    });
+  }
+
+  // 설문 검색 리스트
+  let surveyList = [];
   let page = {
     prev: false,
     start: 1,
@@ -40,23 +59,10 @@ const SurveySearchList = () => {
     next: false,
     end: 1,
     pagelist: [1, 2, 3, 4, 5, 6],
-  }
-  let category = [
-    {id: 1, name: '학교' },
-    {id: 2, name: '기업',},
-    {id: 3,name: '연애',},
-    {id: 4,name: '사업',},
-    {id: 5, name: '취미',},
-  ]
-
-  let surveyList = []
-
-  // 설문 검색 리스트
+  };
   const [loading, response, error] = usePromise(() => {
     return axios.get(apiConfig.surveySearchList+"?&category_id=10&page="+ nowPage);
   }, []);
-
-
   if(response != null){
     surveyList = response.data.content;
     let arr = [];
@@ -67,7 +73,6 @@ const SurveySearchList = () => {
   }
   
 
-
   // 검색 상세 페이지 링크
   const tableRowClick = (e, id) => {
     window.location.href = "/#/survey/detail/"+id;
@@ -76,6 +81,7 @@ const SurveySearchList = () => {
       
   return (
     <>
+    { loading?  <Loading /> : 
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -88,18 +94,13 @@ const SurveySearchList = () => {
               <CCardBody>
                 <CForm action={'/#/survey/search'} method={'post'}>
                   <CInputGroup className="mb-4">
-                    <CDropdown variant="input-group">
-                      <CDropdownToggle color="secondary" variant="outline">
-                        분류 선택
-                      </CDropdownToggle>
-                      <CDropdownMenu>
-                        {category.map((data) => (
-                          <CDropdownItem href={'/search?category=' + data.id} key={data.id}>
-                            {data.name}
-                          </CDropdownItem>
-                        ))}
-                      </CDropdownMenu>
-                    </CDropdown>
+                    <Select
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      defaultValue={[]}
+                      isMulti
+                      options={categoryOptionList}
+                    />
                     <CFormInput aria-label="Text input with 2 dropdown buttons" />
                     <CButton type="submit">검색</CButton>
                   </CInputGroup>
@@ -177,6 +178,7 @@ const SurveySearchList = () => {
           </CCard>
         </CCol>
       </CRow>
+      }
     </>
   )
 }
