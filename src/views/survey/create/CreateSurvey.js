@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
 import {
   CCard,
   CCardHeader,
@@ -10,17 +13,29 @@ import {
   CTabContent, 
   CTabPane,
   CButton,
-  CAlert
+  CAlert,
+  CToast,
+  CToastHeader,
+  CToastBody,
+  CToaster,
 } from '@coreui/react'
 import CreateSurveyInfo from './component/CreateSurveyInfo';
 import CreateQuestion from './component/CreateQuestion';
 import Send from './component/Send';
 import axios from 'axios';
 import apiConfig from 'src/lib/apiConfig';
+import usePromise from 'src/lib/usePromise';
+import Loading from 'src/lib/Loading/Loading';
+
 
 const CreateSurvey = () => {
+  const navigate = useNavigate();
+
   const [activeKey, setActiveKey] = useState(1);
   const [visible, setVisible] = useState(false);
+
+  // 설문 생성
+  const [loading, setLoading] = useState(false); // 대기
 
   const { user } = useSelector(({user})=> ({user:user.user}));
   const { survey } = useSelector(({ survey }) => ({
@@ -37,14 +52,28 @@ const CreateSurvey = () => {
     const accessToken = user.token.access_token;
     headers = {'Authorization': 'Bearer ' + accessToken };
   }
-
-
   
   // 설문발송탭 활성/비활성화
   function showSendTab(flag) {
     setValidated(flag);
   }
 
+  const surveyToast = (text) => (
+    <CToast>
+      <CToastHeader closeButton>
+        <strong className="me-auto">SURVEY PLATFORM</strong>
+        {/* <small>7 min ago</small> */}
+      </CToastHeader>
+      <CToastBody>{ text }</CToastBody>
+    </CToast>
+  );
+
+
+
+  const [toast, addToast] = useState(0);
+  const toaster = useRef()
+
+  // 설문생성 버튼클릭
   function createSurvey(){
 
     const surveyParam = Object.fromEntries(survey);
@@ -77,15 +106,23 @@ const CreateSurvey = () => {
         "surveyTargetList" : []
     };
 
-    console.log(body)
-    axios.post(apiConfig.createSurvey, body, {headers: headers})
-      .then((response) => {
-        console.log(response);
-      })
+    setLoading(true);
+    try {
+      axios.post(apiConfig.createSurvey, body, {headers: headers})
+        .then((response) => {
+          addToast(surveyToast("설문조사가 등록되었습니다."));
+          setTimeout(()=>{  
+            navigate('/#/survey/makeList');
+          }, 1000);
+        })
+    } catch (e){
+      setLoading(false);
+    }
   }
   
   return (
     <>
+    { loading?  <Loading /> : 
      <CCard className="mb-3">
         <CCardHeader>설문 생성<small> 설문을 생성 할 수 있습니다.</small>
         </CCardHeader>
@@ -148,10 +185,12 @@ const CreateSurvey = () => {
               <CButton color="primary" onClick={createSurvey}>
                 Create
               </CButton>
+              <CToaster ref={toaster} push={toast} placement="top-end" />
             </div>
           </div>
         </CCardBody>
       </CCard>
+    }
     </>
   )
 }
