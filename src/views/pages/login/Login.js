@@ -23,6 +23,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import Loading from 'src/lib/Loading/Loading';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ const Login = () => {
     authError: auth.authError,
     user: user.user,
   }));
+  const [loading, setLoading] = useState(false); // 대기
+
 
   // 인풋 변경 이벤트 핸들러
   const onChange = (e) => {
@@ -49,10 +52,11 @@ const Login = () => {
 
   // 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
-  e.preventDefault();
-  const { username, password } = form;
-  dispatch(login({ username, password }));
-  };
+    setLoading(true);  
+    e.preventDefault();
+    const { username, password } = form;
+    dispatch(login({ username, password }));
+    };
 
   // 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
   useEffect(() => {
@@ -73,6 +77,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authError) {
+      setLoading(false);  
       console.log('오류 발생');
       console.log(authError);
       setError('로그인 실패');
@@ -81,6 +86,7 @@ const Login = () => {
       return;
     }
     if (auth) {
+      setLoading(false);  
       addToast(loginToast("LOGIN SUCCESS"));
       console.log('로그인 성공');
       dispatch(check(auth.data));
@@ -105,6 +111,8 @@ const Login = () => {
   const toaster = useRef()
 
   return (
+    <>
+  { loading ? <Loading /> :
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
@@ -176,6 +184,8 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
+    }  
+  </>
   )
 }
 
