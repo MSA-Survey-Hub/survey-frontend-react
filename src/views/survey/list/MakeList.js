@@ -100,24 +100,6 @@ const MakeList = () => {
     page.pagelist = arr;
   }
 
-
-  function clickSearchSurvey(page){
-    console.log(page);
-    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ page,
-      {headers: {'Authorization': 'Bearer ' + accessToken }})
-    .then((res)=> {
-      console.log(res);
-      surveyList = res.data.content;
-      page.page = res.data.number+1;
-      let arr = [];
-      for (let i = 0; i < res.data.totalPages; i++) {
-        arr.push(i+1);
-      }
-      page.pagelist = arr;
-    });
-  };
-
-
   const DuplicateSurveyOnClickHandler = (e, link,sur_id) => {
     window.location.href = link+'?copy='+sur_id;
   }
@@ -149,7 +131,7 @@ const MakeList = () => {
                         onChange={setSelectedOption}
                       />
                     <CFormInput aria-label="Text input with 2 dropdown buttons" />
-                    <CButton type="button" onClick={clickSearchSurvey}>검색</CButton>
+                    <CButton type="button">검색</CButton>
                   </CInputGroup>
                 </CForm>
                 <CRow>
