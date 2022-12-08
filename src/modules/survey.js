@@ -2,6 +2,9 @@ import { createAction, handleActions } from 'redux-actions';
 import createRequestSaga, { createRequestActionTypes} from '../lib/createRequestSaga';
 import { delay, put, takeLatest, select, throttle } from 'redux-saga/effects';
 import {Map, List} from 'immutable';
+import moment from 'moment';
+
+
 
 const EDIT_TITLE = 'survey/edit_title';
 const EDIT_CATEGORY = 'survey/edit_category';
@@ -47,11 +50,14 @@ export function* surveySaga() {
 }
 
 
-const initialState =    Map({
+const dt = new Date();
+const duedt = dt.setMonth(dt.getMonth() + 1);
+
+const initialState = Map({
     title : "",
     categoryId : "1",
-    // dueDt: "2022-11-30T12:00:00",
-    dueDate: "2022-11-30",
+
+    dueDate:moment(new Date(duedt)).format('YYYY-MM-DD'),
     dueTime: "12:00",
     isLoginYn : "Y",
     isPrivateYn : "N",
