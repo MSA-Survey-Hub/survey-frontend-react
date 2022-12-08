@@ -12,7 +12,7 @@ import {
 
 
 import { useSelector, useDispatch } from 'react-redux';
-import * as surveyActions from "../../../modules/survey";
+import * as surveyActions from "../../../../modules/survey";
 import axios from 'axios';
 import apiConfig from 'src/lib/apiConfig';
 import usePromise from 'src/lib/usePromise';

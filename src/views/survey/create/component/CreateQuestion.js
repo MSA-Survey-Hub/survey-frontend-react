@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Question from './Question';
 import { useSelector, useDispatch } from 'react-redux';
-import * as questionActions from "../../../modules/questions";
+import * as questionActions from "../../../../modules/questions";
 import {CButton, CCard, CCardBody,} from '@coreui/react'
 
 // 질문 리스트

@@ -12,9 +12,9 @@ import {
   CButton,
   CAlert
 } from '@coreui/react'
-import CreateSurveyInfo from './CreateSurveyInfo';
-import CreateQuestion from './CreateQuestion';
-import Send from './Send';
+import CreateSurveyInfo from './component/CreateSurveyInfo';
+import CreateQuestion from './component/CreateQuestion';
+import Send from './component/Send';
 import axios from 'axios';
 import apiConfig from 'src/lib/apiConfig';
 
