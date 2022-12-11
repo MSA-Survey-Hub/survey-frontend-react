@@ -40,7 +40,7 @@ const Login = () => {
 
   // 인풋 변경 이벤트 핸들러
   const onChange = (e) => {
-    const { value, name } = e.target; 
+    const { value, name } = e.target;
     dispatch(
       changeField({
         form: 'login',
@@ -52,7 +52,7 @@ const Login = () => {
 
   // 폼 등록 이벤트 핸들러
   const onSubmit = (e) => {
-    setLoading(true);  
+    setLoading(true);
     e.preventDefault();
     const { username, password } = form;
     dispatch(login({ username, password }));
@@ -77,7 +77,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authError) {
-      setLoading(false);  
+      setLoading(false);
       console.log('오류 발생');
       console.log(authError);
       setError('로그인 실패');
@@ -86,7 +86,7 @@ const Login = () => {
       return;
     }
     if (auth) {
-      setLoading(false);  
+      setLoading(false);
       addToast(loginToast("LOGIN SUCCESS"));
       console.log('로그인 성공');
       dispatch(check(auth.data));
@@ -127,7 +127,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput 
+                      <CFormInput
                         placeholder="Username"
                         onChange={onChange}
                         autoComplete="username"
@@ -171,11 +171,11 @@ const Login = () => {
                     <p>
                       welcome to team cloud survey based data hub platform.
                     </p>
-                    <Link to="/register">
-                      <CButton color="warning" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
-                    </Link>
+
+                    <CButton color="warning" className="mt-3" active tabIndex={-1} href="/#/auth/register">
+                      Register Now!
+                    </CButton>
+
                   </div>
                 </CCardBody>
               </CCard>
@@ -184,7 +184,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-    }  
+    }
   </>
   )
 }
