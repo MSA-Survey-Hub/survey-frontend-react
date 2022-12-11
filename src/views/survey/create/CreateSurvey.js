@@ -115,7 +115,7 @@ const CreateSurvey = () => {
         "survey": surveyParam,
         "send_yn": validated? "Y":"N",
         "questionDTOList" : questionDTOList,
-        "surveyTargetList" : surveyTargetList
+        "surveyTargetDTOList" : surveyTargetList
     };
     console.log(body);
     setLoading(true);
