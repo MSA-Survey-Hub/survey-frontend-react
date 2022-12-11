@@ -153,9 +153,9 @@ const SurveySearchList = () => {
                   
                   {page.pagelist.map((idx) =>
                     idx === page.page ? (
-                      <CPaginationItem active>{page.page}</CPaginationItem>
+                      <CPaginationItem active key={idx}>{page.page}</CPaginationItem>
                     ) : (
-                      <CPaginationItem>
+                      <CPaginationItem key={idx}>
                         <a href={'/#/survey/search?&page=' + idx}>{idx}</a>
                       </CPaginationItem>
                     ),

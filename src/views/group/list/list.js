@@ -282,9 +282,9 @@ const Grouplist = () => {
                 )}
                 {pageData.pageList.map((idx) =>
                   idx === parseInt(pageData.page) ?(
-                    <CPaginationItem active>{pageData.page}</CPaginationItem>
+                    <CPaginationItem active key={idx}>{pageData.page}</CPaginationItem>
                   ) : (
-                    <CPaginationItem>
+                    <CPaginationItem key={idx}>
                       <a href={"/#/group/list?page=" + idx}>{idx}</a>
                     </CPaginationItem>
                   ),

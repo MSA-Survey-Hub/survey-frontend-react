@@ -133,6 +133,7 @@ const MakeList = () => {
                   </>
                 }
                 </CRow>
+<<<<<<< HEAD
 
                 <Pagination
                       activePage={pageData.page}
@@ -144,6 +145,41 @@ const MakeList = () => {
                       onChange={handlePageChange}
                     />
 
+=======
+                <CPagination aria-label="Page navigation example" align="center">
+                  {page.prev ? (
+                    <CPaginationItem aria-label="Previous">
+                      <span aria-hidden="true">
+                        <a href={'/#/survey/makeList?category=' + getSelectedCategory()+ '&page=' + page.start - 1}>&laquo;</a>
+                      </span>
+                    </CPaginationItem>
+                  ) : (
+                    <CPaginationItem aria-label="Previous" disabled>
+                      <span aria-hidden="true">&laquo;</span>
+                    </CPaginationItem>
+                  )}
+                  {page.pagelist.map((idx) =>
+                    idx === page.page ? (
+                      <CPaginationItem active key={idx}>{page.page}</CPaginationItem>
+                    ) : (
+                      <CPaginationItem key={idx}>
+                        <a href={ "#/survey/makeList?category=" + getSelectedCategory() +  "&page=" + idx} >{idx}</a>
+                      </CPaginationItem>
+                    ),
+                  )}
+                  {page.next ? (
+                    <CPaginationItem aria-label="Next">
+                      <span aria-hidden="true">
+                        <a href={'/#/survey/makeList?category=' +getSelectedCategory() + '&page=' + page.end + 1}>&raquo;</a>
+                      </span>
+                    </CPaginationItem>
+                  ) : (
+                    <CPaginationItem aria-label="Next" disabled>
+                      <span aria-hidden="true">&raquo;</span>
+                    </CPaginationItem>
+                  )}
+                </CPagination>
+>>>>>>> 383b9603117fdd2bc818f054e757358adf8f282b
               </CCardBody>
             </CCard>
           </CCardBody>

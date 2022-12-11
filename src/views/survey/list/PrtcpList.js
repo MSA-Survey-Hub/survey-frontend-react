@@ -142,9 +142,9 @@ const SurveyDetailOnClickHandler = (e, link,sur_id) => {
                   )}
                   {page.pagelist.map((idx) =>
                     idx === page.page ? (
-                      <CPaginationItem active>{page.page}</CPaginationItem>
+                      <CPaginationItem active key={idx}>{page.page}</CPaginationItem>
                     ) : (
-                      <CPaginationItem>
+                      <CPaginationItem key={idx}>
                         <a href={'/search?category=' + page.category + '&page=' + idx}>{idx}</a>
                       </CPaginationItem>
                     ),
