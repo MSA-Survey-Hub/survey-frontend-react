@@ -33,21 +33,21 @@ List([
     Map({
         id : 1,
         questionType : "Sub",
-        content : "질문을 입력해주세요",
+        content : "",
         optionList : []
     }),
     Map({
         id : 2,
         questionType : "NumOnly",
-        content : "질문을 입력해주세요.",
+        content : "",
         optionList :[
             Map({
                 queOptId : 1,
-                optionName : "답변1"
+                optionName : ""
             }), 
             Map({
                 queOptId : 2,
-                optionName : "답변2"
+                optionName : ""
             }), 
         ]
     }),
@@ -62,7 +62,7 @@ const questions = handleActions({
         return state.push(Map({
                 id : id,
                 questionType : "Sub",
-                content : "질문을 입력해주세요",
+                content : "",
                 optionList : []
             }));
     },

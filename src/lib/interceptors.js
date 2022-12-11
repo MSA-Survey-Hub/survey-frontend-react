@@ -15,7 +15,7 @@ axios.interceptors.request.use(function (config) {
 
   if(token !== null){
     config.headers.Authorization = `Bearer ${token}`;
-    console.log("Authorization", config.headers.Authorization);
+    // console.log("Authorization", config.headers.Authorization);
 
   }
   return config;
@@ -36,7 +36,7 @@ axios.interceptors.response.use(
       
         const user = localStorage.getItem("user");
         const ACCESS_TOKEN = JSON.parse(user).token.access_token;
-        console.log("원래 토큰", ACCESS_TOKEN);
+        // console.log("원래 토큰", ACCESS_TOKEN);
         const REFRESH_TOKEN = JSON.parse(user).token.refresh_token;
 
          axios.post(apiConfig.refreshToken,{ refresh_token: REFRESH_TOKEN })

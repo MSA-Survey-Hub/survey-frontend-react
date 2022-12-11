@@ -9,12 +9,15 @@ const version = '/v1';
 
 const apiConfig = {
 
-    bestSurvey: service.survey + version + '/survey/best',                              // 메인화면 설문 리스트 조회
+    bestSurvey: service.survey + version + '/survey/best',                                  // 메인화면 설문 리스트 조회
 
     menuList : service.common + version + '/common/menu',                                   // 사이드바 메뉴 리스트 조회
 
     userDetail : service.auth + version + '/user/detail',                                   // 사용자 상세정보 조회
+    allUserList : service.auth + version + '/user/allUserList',                                 // 사용자 검색 리스트 조회
+
     groupList : service.auth + version + '/group/list',                                     // 사용자 그룹 리스트 조회
+    allGroupList : service.auth + version + '/group/allList',                               // 사용자 생성 그룹 리스트 조회
     groupDelete : service.auth + version + '/group/delete',                                 // 사용자 그룹 삭제
     groupDetail : service.auth + version + '/group/detail',                                 // 사용자 그룹 상세 조회
     groupPrtcp : service.auth + version + '/group/participate',                             // 사용자 그룹 참여
@@ -46,7 +49,7 @@ const apiConfig = {
     surveyCategoryList: service.survey + version +  '/survey/category/list',                // 설문 카테고리 조회
     surveyCategoryRegister: service.survey + version +  '/survey/category/reg',             // 설문 카테고리 생성
     surveyCategoryDelete: service.survey + version +  '/survey/category/del',               // 설문 카테고리 삭제
-    surveyCategorySelectList : service.survey + version + '/survey/category/selectlist'   // 설문 카테고리 조회(selectbox)
+    surveyCategorySelectList : service.survey + version + '/survey/category/selectlist'     // 설문 카테고리 조회(selectbox)
 }
 
 export default apiConfig;

@@ -24,7 +24,6 @@ import CreateQuestion from './component/CreateQuestion';
 import Send from './component/Send';
 import axios from 'axios';
 import apiConfig from 'src/lib/apiConfig';
-import usePromise from 'src/lib/usePromise';
 import Loading from 'src/lib/Loading/Loading';
 
 
@@ -44,6 +43,11 @@ const CreateSurvey = () => {
   const { questions } = useSelector(({ questions }) => ({
     questions : questions
   }));
+
+  // const { selectedList } = useSelector(({ surveySend }) => ({
+  //   selectedList : surveySend
+  // }));
+
   const [validated, setValidated] = useState(false);
 
 
@@ -89,7 +93,7 @@ const CreateSurvey = () => {
       const map = Object.fromEntries(question);
       const list = [];
       map.optionList.forEach(function(option) {
-        let newOption = {
+        const newOption = {
           optionOrder : option.get("queOptId"),
           optionName : option.get("optionName")
         }
@@ -97,15 +101,23 @@ const CreateSurvey = () => {
       });
       map.optionList = list;
       questionDTOList.push(map);
-  });
-  
+    });
+
+    const surveyTargetList = [];
+    if(validated){
+      surveyParam.status = "I";
+      // selectedList.forEach(function(member) {
+        // surveyTargetList.push(member.userId);
+      // });
+      
+    }
     const body ={ 
         "survey": surveyParam,
         "send_yn": validated? "Y":"N",
         "questionDTOList" : questionDTOList,
-        "surveyTargetList" : []
+        "surveyTargetList" : surveyTargetList
     };
-
+    console.log(body);
     setLoading(true);
     try {
       axios.post(apiConfig.createSurvey, body, {headers: headers})

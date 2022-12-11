@@ -17,106 +17,65 @@ import {
   CCardHeader,
   CCardFooter, CForm,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilPlus, cilMinus } from '@coreui/icons'
+import CIcon from '@coreui/icons-react';
+import { cilPlus, cilMinus } from '@coreui/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import * as surveyTargetActions from "../../../../modules/surveyTarget";
+import * as surveySendActions from "../../../../modules/surveySend";
+
+
 const Send = () => {
-  const [search, setSearch] = useState('')
-  const [searchUsers, setSearchUsers] = useState([])
-  const handleSearchInput = (event) => {
-    setSearch(event.target.value)
-    console.log(event.target.value)
-  }
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.get('/send?search' + search)
-  //       setSearchUsers(result.data)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  // })
-  const [selected, setSelected] = useState('')
+  const dispatch = useDispatch();
+
+  const { groupList, memberList } = useSelector(({ surveyTarget }) => ({
+    groupList : surveyTarget.groupList,
+    memberList : surveyTarget.memberList
+  }));
+
+  const { selectedList } = useSelector(({ surveySend }) => ({
+    selectedList : surveySend
+  }));
+
+  const [selectedGroupId, setSelectedGroupId] = useState('');
+  const [selectedType, setSelectedType] = useState('Name');
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+
+  // 그룹 리스트 조회
+  useEffect(() => {
+    dispatch(surveyTargetActions.getGroupList());
+  }, []);
+
+  // 그룹 선택
   const handleSelect = (e) => {
-    setSelected(e.target.value)
+    setSelectedGroupId(e.target.value);
   }
-  const [sendItems, setSendItems] = useState([])
+
+  // 회원 검색 타입 선택
+  const handleSelect2 = (e) => {
+    setSelectedType(e.target.value);
+  }
+
+  // 회원 검색 키워드 입력
+  const handleSearchInput = (e) => {
+    setSearchKeyword(e.target.value);
+  }
+
+  // 회원 검색 버튼 클릭
+  const handleClickSearch = (e) => {
+    dispatch(surveyTargetActions.getMemberList({selectedType, searchKeyword}));
+  }
+
+  // 선택목록 추가 
   const addSendItemHandler = (e, member) => {
-    setSendItems([...sendItems, member])
+    dispatch(surveySendActions.addSelectedList({member}));
   }
+
+  // 선택목록 삭제
   const subSendItemHandler = (member) => {
-    setSendItems(sendItems.filter((sendItem) => sendItem.member !== member))
+    dispatch(surveySendActions.deleteSelectedList({member}));
   }
-  const grouplist = [
-    {
-      gid: 'group1',
-      name: 'yena group',
-      members: [
-        {
-          member_id: 11,
-          member_name: 'yena1',
-          member_email: 'yena1@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-        {
-          member_id: 12,
-          member_name: 'yena2',
-          member_email: 'yena2@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-        {
-          member_id: 13,
-          member_name: 'yena3',
-          member_email: 'yena3@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-      ],
-    },
-    {
-      gid: 'group2',
-      name: 'yuri group',
-      members: [
-        {
-          member_id: 21,
-          member_name: 'yuri1',
-          member_email: 'yuri1@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-        {
-          member_id: 22,
-          member_name: 'yuri2',
-          member_email: 'yuri2@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-        {
-          member_id: 23,
-          member_name: 'yuri3',
-          member_email: 'yuri3@gachon.ac.kr',
-          member_phone: '010-1234-5678',
-        },
-      ],
-    },
-  ]
-  const search_member = [
-    {
-      member_id: 31,
-      member_name: 'solbi1',
-      member_email: 'solbi1@gachon.ac.kr',
-      member_phone: '010-1234-5678',
-    },
-    {
-      member_id: 32,
-      member_name: 'solbi2',
-      member_email: 'solbi2@gachon.ac.kr',
-      member_phone: '010-1234-5678',
-    },
-    {
-      member_id: 33,
-      member_name: 'solbi3',
-      member_email: 'solbi3@gachon.ac.kr',
-      member_phone: '010-1234-5678',
-    },
-  ]
+
   return (
     <>
       <CRow>
@@ -127,9 +86,9 @@ const Send = () => {
               <CCardBody>
                 <CFormSelect className="mb-3" onChange={handleSelect}>
                   <option>그룹을 선택하세요</option>
-                  {grouplist.map((data) => (
-                    <option value={data.gid} key={data.gid}>
-                      {data.name}
+                  {groupList.map((data) => (
+                    <option value={data.groupId} key={data.groupId}>
+                      {data.groupName}
                     </option>
                   ))}
                 </CFormSelect>
@@ -142,26 +101,25 @@ const Send = () => {
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    {grouplist.map((group) =>
-                      group.gid === selected
-                        ? group.members.map((member) => (
-                            <CTableRow key={member.member_id}>
-                              <CTableHeaderCell scope="row">
-                                <CIcon
-                                  className="CButton"
-                                  icon={cilPlus}
-                                  size="sm"
-                                  onClick={(e) => {
-                                    addSendItemHandler(e, { member })
-                                  }}
-                                ></CIcon>
-                              </CTableHeaderCell>
-                              <CTableDataCell>{member.member_name}</CTableDataCell>
-                              <CTableDataCell>{member.member_email}</CTableDataCell>
-                            </CTableRow>
-                          ))
-                        : null,
-                    )}
+                  { groupList.map((group) =>
+                    group.groupId == selectedGroupId? group.prtcpList.map((member) => (
+                      <CTableRow key={member.userId}>
+                        <CTableHeaderCell scope="row">
+                          <CIcon
+                            className="CButton"
+                            icon={cilPlus}
+                            size="sm"
+                            onClick={(e) => {
+                              addSendItemHandler(e, member )
+                            }}
+                          ></CIcon>
+                        </CTableHeaderCell>
+                        <CTableDataCell>{member.name}</CTableDataCell>
+                        <CTableDataCell>{member.mailAddr}</CTableDataCell>
+                      </CTableRow>
+                    ))
+                    : null,
+                  )}
                   </CTableBody>
                 </CTable>
               </CCardBody>
@@ -170,12 +128,12 @@ const Send = () => {
               <CCardHeader>회원 검색</CCardHeader>
               <CCardBody>
                 <CInputGroup className="mb-3">
-                  <CFormSelect>
-                    <option value="1">Email</option>
-                    <option value="2">Name</option>
+                  <CFormSelect onChange={handleSelect2}>
+                    <option value="Name">Name</option>
+                    <option value="Email">Email</option>
                   </CFormSelect>
                   <CFormInput onInput={handleSearchInput} />
-                  <CButton type="submit">Search</CButton>
+                  <CButton type="submit" onClick={handleClickSearch}>Search</CButton>
                 </CInputGroup>
                 <CTable>
                   <CTableHead>
@@ -186,20 +144,20 @@ const Send = () => {
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    {search_member.map((member) => (
-                      <CTableRow key={member.member_id}>
+                    {memberList.map((member) => (
+                      <CTableRow key={member.userId}>
                         <CTableHeaderCell scope="row">
                           <CIcon
                             className="CButton"
                             icon={cilPlus}
                             size="sm"
                             onClick={(e) => {
-                              addSendItemHandler(e, { member })
+                              addSendItemHandler(e, member)
                             }}
                           ></CIcon>
                         </CTableHeaderCell>
-                        <CTableDataCell>{member.member_name}</CTableDataCell>
-                        <CTableDataCell>{member.member_email}</CTableDataCell>
+                        <CTableDataCell>{member.name}</CTableDataCell>
+                        <CTableDataCell>{member.mailAddr}</CTableDataCell>
                       </CTableRow>
                     ))}
                   </CTableBody>
@@ -221,20 +179,20 @@ const Send = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {sendItems.map((sendItem) => (
-                    <CTableRow key={sendItem.member.member_id}>
+                  {selectedList.map((member) => (
+                    <CTableRow key={member.userId}>
                       <CTableHeaderCell scope="row">
                         <CIcon
                           className="CButton"
                           icon={cilMinus}
                           size="sm"
                           onClick={(e) => {
-                            subSendItemHandler(sendItem.member)
+                            subSendItemHandler(member)
                           }}
                         ></CIcon>
                       </CTableHeaderCell>
-                      <CTableDataCell>{sendItem.member.member_name}</CTableDataCell>
-                      <CTableDataCell>{sendItem.member.member_email}</CTableDataCell>
+                      <CTableDataCell>{member.name}</CTableDataCell>
+                      <CTableDataCell>{member.mailAddr}</CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

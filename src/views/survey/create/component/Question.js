@@ -79,7 +79,7 @@ const Question = ({question, changeContent, deleteQuestion, editQuestionType, ad
                         </CFormSelect>
                         </CCol>
                         <CCol className="mb-3" xs={12}>
-                        <CFormInput name ="question_content" type="text" label="Question" value={question.get("content")} onChange={onChangeQuestionContent}/>
+                        <CFormInput name ="question_content" placeholder="질문을 입력하세요." type="text" label="Question" value={question.get("content")} onChange={onChangeQuestionContent}/>
                         </CCol>
                     </CRow>
                 </CCardBody>
@@ -91,7 +91,7 @@ const Question = ({question, changeContent, deleteQuestion, editQuestionType, ad
                 <CCardHeader>질문{question.get("id")}. {question.get("content")}</CCardHeader>
                 <CCardBody>
                 {question.get("questionType") === 'Sub' && (
-                    <CFormTextarea></CFormTextarea>
+                    <CFormTextarea placeholder="답변을 입력하세요."></CFormTextarea>
                 )}
                 {question.get("questionType") === 'NumMul' && (
                     <>

@@ -15,10 +15,11 @@ import {tempSetUser, check} from './modules/user'
 
 const sagaMiddleware = createSagaMiddleware();
 
+
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware)),
-  );
+  composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
   function loadUser() {
     try {

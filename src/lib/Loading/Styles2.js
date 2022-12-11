@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Background = styled.div`
   position: absolute;
-  width: 70vw;
+  width: 100vw;
   height: 70vh;
   top: 0;
   left: 0;
