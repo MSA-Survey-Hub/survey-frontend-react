@@ -45,9 +45,13 @@ const MakeList = () => {
     next: false,
     totalElements : 1
   })
- 
+  const [keyword, setKeyword] = useState('');
+  const [savedkeyword, setSavedKeyword] = useState('');
+
+
+
   useEffect(() => {
-    handleFetch(1);
+    handleFetch(1, '');
   }, []);
   
 
@@ -75,8 +79,8 @@ const MakeList = () => {
   }
 
   // 설문 리스트
-  const handleFetch = (selectedPage) => {
-    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage)
+  const handleFetch = (selectedPage, title) => {
+    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title)
     .then(response => {
       const data = response.data;
       setSurveyList(data.content);
@@ -96,8 +100,20 @@ const MakeList = () => {
   };
 
   const handlePageChange = (selectedPage) => {
-    handleFetch(selectedPage);
+    handleFetch(selectedPage, savedkeyword);
   };
+
+  const handlekeywordChange = (e) => {
+    const { value, name } = e.target;
+    setKeyword(value);
+
+  };
+
+  const handleClickSearch = () => {
+    setSavedKeyword(keyword);
+    handleFetch(1, keyword);
+  };
+
 
   return (
     <>
@@ -107,7 +123,6 @@ const MakeList = () => {
           <CCardHeader>
             <strong> 생성 목록 </strong>
             <small> 생성한 설문조사를 조회 할 수 있습니다. </small>
-
           </CCardHeader>
           <CCardBody>
             <CCard className="mb-2">
@@ -121,8 +136,8 @@ const MakeList = () => {
                         options={categoryOptionList}
                         onChange={setSelectedOption}
                       />
-                    <CFormInput aria-label="Text input with 2 dropdown buttons" />
-                    <CButton type="button">검색</CButton>
+                    <CFormInput placeholder='제목을 입력하세요.' value={keyword} onChange={handlekeywordChange}/>
+                    <CButton type="button" onClick={handleClickSearch}>검색</CButton>
                   </CInputGroup>
                 </CForm>
                 <CRow>
@@ -133,8 +148,8 @@ const MakeList = () => {
                   </>
                 }
                 </CRow>
-
-                <Pagination
+                  {
+                    surveyList.length > 0 ? (<Pagination
                       activePage={pageData.page}
                       itemsCountPerPage={pageData.size}
                       totalItemsCount={pageData.totalElements}
@@ -142,8 +157,8 @@ const MakeList = () => {
                       prevPageText={"‹"}
                       nextPageText={"›"}
                       onChange={handlePageChange}
-                    />
-
+                    />) : '검색 결과가 없습니다.'
+                  }
               </CCardBody>
             </CCard>
           </CCardBody>
