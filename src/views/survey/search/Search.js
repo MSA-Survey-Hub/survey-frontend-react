@@ -50,6 +50,9 @@ const SurveySearchList = () => {
     });
   }
 
+
+
+
   // 설문 검색 리스트
   let surveyList = [];
   let page = {
@@ -87,7 +90,7 @@ const SurveySearchList = () => {
         <CCard className="mb-4">
           <CCardHeader>
             <strong> 설문 검색 </strong>
-            <small> 전체 공개된 설문조사를 조회 할 수 있습니다. </small>
+            <small> 배포된 전체 공개 설문조사를 조회 할 수 있습니다. </small>
           </CCardHeader>
           <CCardBody>
             <CCard className="mb-2">

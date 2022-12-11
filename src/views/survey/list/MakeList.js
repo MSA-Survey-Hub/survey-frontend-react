@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import {
   CInputGroup,
   CFormInput,
@@ -21,6 +22,9 @@ import Pagination from "react-js-pagination";
 import SurveyCard from './SurveyCard';
 
 const MakeList = () => {
+  const { user } = useSelector(({user})=> ({user:user.user}));
+  const accessToken = user.token.access_token;
+
 
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -73,7 +77,8 @@ const MakeList = () => {
   const handleFetch = (selectedPage, title) => {
     setLoading(true);
 
-    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title)
+    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title, 
+    {headers: {'Authorization': 'Bearer ' + accessToken }})
     .then(response => {
       const data = response.data;
       setSurveyList(data.content);

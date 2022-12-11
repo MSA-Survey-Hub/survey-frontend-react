@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import {
   CInputGroup,
   CFormInput,
   CButton,
   CCard,
   CCardBody,
-  CCardTitle,
-  CCardText,
   CRow,
   CCol,
   CForm,
-  CCardFooter,
   CCardHeader,
-  CBadge,
-  CPagination,
-  CPaginationItem,
 } from '@coreui/react'
 import axios from "axios";
 import apiConfig from 'src/lib/apiConfig';
@@ -24,7 +19,11 @@ import makeAnimated from 'react-select/animated';
 import Loading from 'src/lib/Loading/Loading2';
 import Pagination from "react-js-pagination";
 import SurveyCard from './SurveyCard';
+
 const PrtcpList = () => {
+  const { user } = useSelector(({user})=> ({user:user.user}));
+  const accessToken = user.token.access_token;
+
 
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -73,7 +72,8 @@ const PrtcpList = () => {
    // 설문 리스트
    const handleFetch = (selectedPage, title) => {
     setLoading(true);
-    axios.get(apiConfig.surveyParticipateList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title)
+    axios.get(apiConfig.surveyParticipateList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title,
+    {headers: {'Authorization': 'Bearer ' + accessToken }})
     .then(response => {
       const data = response.data;
       setSurveyList(data.content);
