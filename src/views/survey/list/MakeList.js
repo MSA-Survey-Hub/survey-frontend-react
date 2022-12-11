@@ -41,6 +41,7 @@ const MakeList = () => {
 
 
   useEffect(() => {
+    setLoading(true);
     handleFetch(1, '');
   }, []);
   
@@ -70,6 +71,8 @@ const MakeList = () => {
 
   // 설문 리스트
   const handleFetch = (selectedPage, title) => {
+    setLoading(true);
+
     axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title)
     .then(response => {
       const data = response.data;
@@ -131,9 +134,12 @@ const MakeList = () => {
                 </CForm>
                 <CRow>
                 { loading ? <Loading /> : <>
-                  {surveyList.map((data) => (
-                   <SurveyCard key={data.surId} data={data} ></SurveyCard>
-                  ))}
+                  {
+                    surveyList.length > 0 ? 
+                      surveyList.map((data) => (
+                      <SurveyCard key={data.surId} data={data} ></SurveyCard>
+                      ))  : '생성 목록이 없습니다.'
+                  }
                   </>
                 }
                 </CRow>
@@ -146,8 +152,8 @@ const MakeList = () => {
                       prevPageText={"‹"}
                       nextPageText={"›"}
                       onChange={handlePageChange}
-                    />) : '검색 결과가 없습니다.'
-                  }
+                    />) : ''
+                    }
               </CCardBody>
             </CCard>
           </CCardBody>

@@ -43,6 +43,7 @@ const PrtcpList = () => {
   const [savedkeyword, setSavedKeyword] = useState('');
 
   useEffect(() => {
+    setLoading(true);
     handleFetch(1, '');
   }, []);
   
@@ -71,6 +72,7 @@ const PrtcpList = () => {
 
    // 설문 리스트
    const handleFetch = (selectedPage, title) => {
+    setLoading(true);
     axios.get(apiConfig.surveyParticipateList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title)
     .then(response => {
       const data = response.data;
@@ -134,9 +136,12 @@ const PrtcpList = () => {
                 </CForm>
                 <CRow>
                 { loading ? <Loading /> : <>
-                  {surveyList.map((data) => (
-                   <SurveyCard key={data.surId} data={data} ></SurveyCard>
-                  ))}
+                  { 
+                    surveyList.length > 0 ? 
+                      surveyList.map((data) => (
+                    <SurveyCard key={data.surId} data={data} ></SurveyCard>
+                    ))
+                  : '참여 목록이 없습니다.' }
                   </>
                 }
                 </CRow>
@@ -149,7 +154,7 @@ const PrtcpList = () => {
                     prevPageText={"‹"}
                     nextPageText={"›"}
                     onChange={handlePageChange}
-                  />) : '검색 결과가 없습니다.'
+                  />) : ''
                 }
               </CCardBody>
             </CCard>
