@@ -8,7 +8,6 @@ axios.interceptors.request.use(function (config) {
   let token = null;
 
   const user = localStorage.getItem("user");
-  console.log(user);
 
   if(user){
     if (config.url != apiConfig.refreshToken) {

@@ -14,29 +14,37 @@ import {
 } from '@coreui/react'
 
 import SurveyInfo from './info/SurveyInfo';
+import QuestionInfo from './info/QuestionInfo';
 import Charts from '../../analysis/user_survey_analysis';
 import AnswerInfo from './info/AnswerInfo';
+import { useParams } from 'react-router-dom'; 
+
+
 import axios from "axios";
 import apiConfig from "../../../lib/apiConfig";
+import usePromise from "../../../lib/usePromise";
 
-import { useParams } from 'react-router-dom'; 
 
 const Detail = () => {
 
   const [activeKey, setActiveKey] = useState(1)
 
-  const removeAnswer = () => {
-    axios.post(apiConfig.answerDelete,
-      {regId: "yena", surId: 2},
-      {headers: {
-          'Content-Type': 'multipart/form-data'
-        }})
-      .then((response) => {
-        window.location.reload("/#/survey/detail");
-      })
-  }
   const params = useParams();
   let surId = params.sur_id;
+
+  let surInfo = null;
+  let questionList = []
+  const [loading, response, error] = usePromise(() => {
+    return axios.post(apiConfig.surveyDetail,
+      {sur_id: surId},
+      {headers: { 'Content-Type': 'multipart/form-data'}}
+    )
+  }, []);
+
+  if(response != null){
+    surInfo = response.data.info;
+    questionList = response.data.question_list
+  }
 
   const SurveyparticipateOnClickHandler = (e, link,sur_id) => {
     window.location.href = link+"/"+sur_id;
@@ -52,7 +60,9 @@ const Detail = () => {
           </CCardHeader>
           <CCardBody>
           <div>
-            <SurveyInfo surId={surId}></SurveyInfo>
+
+            <SurveyInfo surInfo={surInfo}/>
+
             <div
               style={{
                 display: 'flex',
@@ -82,21 +92,25 @@ const Detail = () => {
                 </CNavItem>
               </CNav>
             </div>
+
             <CTabContent>
               <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
-                 <AnswerInfo surId={surId}/>
+                 <AnswerInfo questionList={questionList}/>
               </CTabPane>
+
               <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
                 <Charts surId={surId}/>
               </CTabPane>
+
             </CTabContent>
+
             <CCol lg={12} className="text-start d-flex mt-3">
               {/* <CButton color="danger" href="#" variant="outline" onClick={removeAnswer}>
                 delete
               </CButton> */}
-              <CButton color="warning" href="#" variant="outline">
+              {/* <CButton color="warning" href="#" variant="outline">
                 copy
-              </CButton> 
+              </CButton>  */}
               {/* <CButton color="primary" href="/#/survey/ModifySurvey" className="ms-auto" variant="outline">
                 edit
               </CButton> */}

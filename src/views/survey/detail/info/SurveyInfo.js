@@ -5,35 +5,10 @@ import {
   CCol,
   CRow,
 } from '@coreui/react'
-import axios from "axios";
-import apiConfig from "../../../../lib/apiConfig";
-import usePromise from 'src/lib/usePromise';
+import moment from 'moment';
 
-const DetailInfo = (props) => {
-  // const [surInfo, setSurInfo] = useState([])
-
-  let surInfo = null;
-  console.log(props.surId);
-  const [loading, response, error] = usePromise(() => {
-    return axios.post(apiConfig.surveyDetail,
-      {sur_id: props.surId},
-      {headers: { 'Content-Type': 'multipart/form-data'}}
-    )
-  }, []);
-  
-  console.log(response);
-  if(response != null){
-    surInfo = response.data.info;
-  }
-
-  // axios.post(apiConfig.surveyDetail,
-  //   {sur_id: props.surId},
-  //   {headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }}
-  // ).then((response) => {
-  //   setSurInfo(response.data.info)
-  // })
+const SurveyInfo = ({surInfo}) => {
+  console.log(surInfo);
 
   return (
     <div>
@@ -81,8 +56,7 @@ const DetailInfo = (props) => {
             />
           </CCol>
         </CRow>
-
-        {/* <CRow>
+        <CRow>
             <CFormLabel htmlFor="publicYn" className="col-sm-2 col-form-label">
             공개여부
             </CFormLabel>
@@ -90,15 +64,59 @@ const DetailInfo = (props) => {
             <CFormInput
                 type="text"
                 id="publicYn"
-                defaultValue="클라우드 전용 그룹(그룹)"
+                value={surInfo? (surInfo.isPrivateYn=="Y"? "대상자 공개" : "전체 공개") :null}
                 readOnly
                 plainText
                 />
             </CCol>
-        </CRow> */}
+        </CRow>
+        <CRow>
+            <CFormLabel htmlFor="regDt" className="col-sm-2 col-form-label">
+            등록일
+            </CFormLabel>
+            <CCol sm={10}>
+            <CFormInput
+                type="text"
+                id="regDt"
+                value={surInfo ? moment(new Date(surInfo.regDt)).format('YYYY-MM-DD'):null}
+                readOnly
+                plainText
+                />
+            </CCol>
+        </CRow>
+        <CRow>
+            <CFormLabel htmlFor="regDt" className="col-sm-2 col-form-label">
+            마감일
+            </CFormLabel>
+            <CCol sm={10}>
+            <CFormInput
+                type="text"
+                id="regDt"
+                value={surInfo ?moment(new Date(surInfo.dueDt)).format('YYYY-MM-DD'):null}
+                readOnly
+                plainText
+                />
+            </CCol>
+        </CRow>
+        <CRow>
+            <CFormLabel htmlFor="regId" className="col-sm-2 col-form-label">
+            설문 등록자 
+            </CFormLabel>
+            <CCol sm={10}>
+            <CFormInput
+                type="text"
+                id="regId"
+                value={surInfo? surInfo.regId : null}
+                readOnly
+                plainText
+                />
+            </CCol>
+        </CRow>
+
+
 
     </div>
   )
 }
 
-export default DetailInfo
+export default SurveyInfo

@@ -23,7 +23,6 @@ const Charts = (props) => {
     for (let analysisId = 1; analysisId < 5; analysisId++) {
         const response = await axios.post(`${apiConfig.surveyAnalysisData}?analysis_Id=${analysisId}&sur_id=${props.surId}`)
 
-        console.log('hihi',`${apiConfig.surveyAnalysisData}?analysis_Id=${analysisId}`)
         Data['subject'] = response.data[0].analysisId.subject
 
         let Data_labels = []

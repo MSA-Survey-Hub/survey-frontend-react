@@ -29,22 +29,22 @@ const routes = [
   { path: '/', exact: true, name: 'Home', element: Home },
 
   // 계정
-  { path: '/auth/register', name: 'Register', element: Register },                                       // 사용자 회원 가입
-  { path: '/auth/profile', name: 'Profile', element: Profile },                                       // 사용자 정보 조회
+  { path: '/auth/register', name: 'Register', element: Register },                                          // 사용자 회원 가입
+  { path: '/auth/profile', name: 'Profile', element: Profile },                                             // 사용자 정보 조회
 
   // 설문
-  { path: '/survey/search', name: 'Search', element: Search },                                        // 설문 검색 목록
-  { path: '/survey/create', name: 'Survey', element: SurveyCreate },                                  // 설문 생성
-  { path: '/survey/detail/:sur_id', name: 'Survey Detail', element: surveyDetail },                   // 설문 상세
-  { path: '/survey/prtcpList', name: 'PrtcpList', element: PrtcpList },                               // 설문 참여 목록
-  { path: '/survey/makeList', name: 'MakeList', element: MakeList },                                  // 설문 생성 목록
-  { path: '/survey/answer/register/:sur_id', name: 'Survey Participate', element: SurveyAnswerReg },          // 설문 답변 등록
-  { path: '/survey/answer/edit/:sur_id', name: 'Survey Modify', element: SurveyAnswerEdit },   // 설문 답변 수정
+  { path: '/survey/search', name: 'Search', element: Search },                                              // 설문 검색 목록
+  { path: '/survey/create', name: 'Survey', element: SurveyCreate },                                        // 설문 생성
+  { path: '/survey/detail/:sur_id', name: 'Survey Detail', element: surveyDetail },                         // 설문 상세
+  { path: '/survey/prtcpList', name: 'PrtcpList', element: PrtcpList },                                     // 설문 참여 목록
+  { path: '/survey/makeList', name: 'MakeList', element: MakeList },                                        // 설문 생성 목록
+  { path: '/survey/answer/register/:sur_id', name: 'Survey Participate', element: SurveyAnswerReg },        // 설문 답변 등록
+  { path: '/survey/answer/edit/:sur_id', name: 'Survey Modify', element: SurveyAnswerEdit },                // 설문 답변 수정
 
   // 그룹
-  { path: '/group/list', name: 'Group List', element: grouplist },                                    // 그룹 목록
-  { path: '/group/create', name: 'Group Create', element: groupCreate },                              // 그룹 생성
-  { path: '/group/detail/:group_id', name: 'Group Detail', element: groupDetail },                              // 그룹 상세
+  { path: '/group/list', name: 'Group List', element: grouplist },                                          // 그룹 목록
+  { path: '/group/create', name: 'Group Create', element: groupCreate },                                    // 그룹 생성
+  { path: '/group/detail/:group_id', name: 'Group Detail', element: groupDetail },                          // 그룹 상세
 
   // 분석(ADMIN)
   { path: '/analysis/ad_survey_analysis', name: 'Ad Survey analysis', element: ad_survey_analysis },

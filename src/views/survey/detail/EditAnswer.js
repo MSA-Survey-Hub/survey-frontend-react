@@ -4,13 +4,31 @@ import {
 import React from "react";
 import SurveyInfo from "./info/SurveyInfo";
 import UpdateInfo from "./info/UpdateInfo";
-// import { useHistory } from "react-router";
 import { useParams } from 'react-router-dom'; 
+import axios from "axios";
+import apiConfig from "../../../lib/apiConfig";
+import usePromise from "../../../lib/usePromise";
 
-const ModifySurvey = () => {
 
-const params = useParams();
-let surId = params.sur_id;
+const EditAnswer = () => {
+
+  const params = useParams();
+  let surId = params.sur_id;
+
+  let surInfo = null;
+  let questionList = []
+  const [loading, response, error] = usePromise(() => {
+    return axios.post(apiConfig.surveyDetail,
+      {sur_id: surId},
+      {headers: { 'Content-Type': 'multipart/form-data'}}
+    )
+  }, []);
+
+  if(response != null){
+    surInfo = response.data.info;
+    questionList = response.data.question_list
+  }
+
 
   return(
     <CRow>
@@ -22,7 +40,7 @@ let surId = params.sur_id;
           </CCardHeader>
           <CCardBody>
             <div>
-              <SurveyInfo surId={surId}></SurveyInfo>
+            <SurveyInfo surInfo={surInfo}/>
               <UpdateInfo surId={surId}/>
             </div>
           </CCardBody>
@@ -33,4 +51,4 @@ let surId = params.sur_id;
   )
 }
 
-export default ModifySurvey
+export default EditAnswer

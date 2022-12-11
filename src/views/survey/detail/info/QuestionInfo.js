@@ -15,25 +15,11 @@ import axios from "axios";
 import apiConfig from "../../../../lib/apiConfig";
 import usePromise from "../../../../lib/usePromise";
 
-const DetailInfo = (props) => {
+const DetailInfo = ({surId, questionList}) => {
   const { user } = useSelector(({user})=> ({user:user.user}));
   const userId = user.info.userId;
 
   const [answerList, setAnswerList] = useState([])
-
-
-  let questionList = []
-
-  const [loading, response, error] = usePromise(() => {
-    return axios.post(apiConfig.surveyDetail,
-      {sur_id: props.surId},
-      {headers: { 'Content-Type': 'multipart/form-data'}}
-    )
-  }, []);
-
-  if(response != null){
-    questionList = response.data.question_list
-  }
 
 
   const makeAnswer = (e, queId) => {
@@ -51,11 +37,11 @@ const DetailInfo = (props) => {
   const sendAnswer = () => {
     axios.post(apiConfig.answerRegister,
       {
-        surId: props.surId,
+        surId: surId,
         answerDTOList: answerList
       })
       .then((response) => {
-        window.location.reload(`/#/survey/detail/${props.surId}`,{headers: {'Authorization': 'Bearer ' + accessToken }});
+        window.location.reload(`/#/survey/detail/${surId}`,{headers: {'Authorization': 'Bearer ' + accessToken }});
       })
   }
 

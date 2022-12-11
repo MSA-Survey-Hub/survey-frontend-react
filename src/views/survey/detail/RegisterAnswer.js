@@ -5,18 +5,31 @@ import {
   CCardBody,
   CRow, CCol,
 } from "@coreui/react";
-import axios from "axios";
 import SurveyInfo from "./info/SurveyInfo";
 import QuestionInfo from "./info/QuestionInfo";
 import { useParams } from 'react-router-dom'; 
 
+import axios from "axios";
+import apiConfig from "../../../lib/apiConfig";
+import usePromise from "../../../lib/usePromise";
 
 const RegisterAnswer = () => {
-  const [activeKey, setActiveKey] = useState(1)
-  // const [surId, setSurId] = useState(2)
-
   const params = useParams();
   let surId = params.sur_id;
+
+  let surInfo = null;
+  let questionList = []
+  const [loading, response, error] = usePromise(() => {
+    return axios.post(apiConfig.surveyDetail,
+      {sur_id: surId},
+      {headers: { 'Content-Type': 'multipart/form-data'}}
+    )
+  }, []);
+
+  if(response != null){
+    surInfo = response.data.info;
+    questionList = response.data.question_list
+  }
   
   return (
     <CRow>
@@ -28,8 +41,8 @@ const RegisterAnswer = () => {
           </CCardHeader>
           <CCardBody>
             <div>
-              <SurveyInfo surId={surId}></SurveyInfo>
-              <QuestionInfo surId={surId}/>
+            <SurveyInfo surInfo={surInfo}/>
+            <QuestionInfo surId={surId} questionList={questionList}/>
             </div>
           </CCardBody>
         </CCard>
