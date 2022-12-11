@@ -1,32 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CInputGroup,
-  CDropdownToggle,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdown,
   CFormInput,
   CButton,
   CCard,
   CCardBody,
-  CCardTitle,
-  CCardText,
   CRow,
   CCol,
   CForm,
-  CCardFooter,
   CCardHeader,
-  CBadge,
 } from '@coreui/react'
 import axios from "axios";
 import apiConfig from 'src/lib/apiConfig';
 import usePromise from 'src/lib/usePromise';
-import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import Loading from 'src/lib/Loading/Loading2';
-import { useNavigate } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import SurveyCard from './SurveyCard';
 
@@ -106,7 +96,6 @@ const MakeList = () => {
   const handlekeywordChange = (e) => {
     const { value, name } = e.target;
     setKeyword(value);
-
   };
 
   const handleClickSearch = () => {
