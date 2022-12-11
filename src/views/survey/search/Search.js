@@ -1,18 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CInputGroup,
-  CDropdownToggle,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdown,
   CFormInput,
   CButton,
   CCard,
   CCardBody,
   CCardHeader,
   CForm,
-  CPagination,
-  CPaginationItem,
   CTable,
   CTableDataCell,
   CTableBody,
@@ -28,53 +22,86 @@ import moment from 'moment';
 import usePromise from 'src/lib/usePromise';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
-import Loading from 'src/lib/Loading/Loading';
-
+import Loading from 'src/lib/Loading/Loading2';
+import Pagination from "react-js-pagination";
 
 const SurveySearchList = () => {
-  const current = decodeURI(window.location.href);
-  const search = current.split("?")[1];
-  const params = new URLSearchParams(search);
-  const nowPage = params.get('page') ? params.get('page') : 1;
 
+
+  const [loading, setLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [surveyList, setSurveyList] = useState([]);
+  const [pageData, setPageData] = useState({
+    totalPage: 0,
+    page: 1,
+    size: 0,
+    start: 0,
+    end: 0,
+    prev: false,
+    next: false,
+    totalElements : 1
+  })
+  const [keyword, setKeyword] = useState('');
+  const [savedkeyword, setSavedKeyword] = useState('');
+
+  useEffect(() => {
+    setLoading(true);
+    handleFetch(1, '');
+  }, []);
+  
 
   // 카테고리 리스트
   let categoryOptionList = [];
   const animatedComponents = makeAnimated();
-  const [cloading, cresponse, cerror] = usePromise(() => {
-  return axios.get(apiConfig.surveyCategorySelectList)
+  const [cloading, response, cerror] = usePromise(() => {
+    return axios.get(apiConfig.surveyCategorySelectList)
   }, []);
-  if(cresponse != null){
-    cresponse.data.map((option) => {
+  if(response != null){
+    response.data.map((option) => {
       categoryOptionList.push({ value: option.surCatId, label: option.content });
     });
   }
-
-
-
-
-  // 설문 검색 리스트
-  let surveyList = [];
-  let page = {
-    prev: false,
-    start: 1,
-    page: 3,
-    next: false,
-    end: 1,
-    pagelist: [1, 2, 3, 4, 5, 6],
-  };
-  const [loading, response, error] = usePromise(() => {
-    return axios.get(apiConfig.surveySearchList+"?&category_id=10&page="+ nowPage);
-  }, []);
-  if(response != null){
-    surveyList = response.data.content;
-    let arr = [];
-    for (let i = 0; i < response.data.totalPages; i++) {
-      arr.push(i+1);
-    }
-    page.pagelist = arr;
-  }
   
+
+
+// 설문 리스트
+const handleFetch = (selectedPage, title) => {
+  setLoading(true);
+  axios.get(apiConfig.surveySearchList + "?category=10&page="+ selectedPage+"&title="+ title)
+  .then(response => {
+    const data = response.data;
+    setSurveyList(data.content);
+    setPageData({
+    totalPage: 0,
+    page: data.number+1,
+    size: data.size,
+    start: 1,
+    end: data.totalPages,
+    prev: data.first? false: true,
+    next: data.last? false: true,
+    totalElements : data.totalElements
+  }); 
+    setLoading(false);
+  })
+  .catch(error => console.error('Error', error));
+};
+
+const handlePageChange = (selectedPage) => {
+  handleFetch(selectedPage, savedkeyword);
+};
+
+const handlekeywordChange = (e) => {
+  const { value, name } = e.target;
+  setKeyword(value);
+};
+
+const handleClickSearch = () => {
+  setSavedKeyword(keyword);
+  handleFetch(1, keyword);
+};
+
+
+
 
   // 검색 상세 페이지 링크
   const tableRowClick = (e, id) => {
@@ -90,7 +117,7 @@ const SurveySearchList = () => {
         <CCard className="mb-4">
           <CCardHeader>
             <strong> 설문 검색 </strong>
-            <small> 배포된 전체 공개 설문조사를 조회 할 수 있습니다. </small>
+            <small> 배포된 설문조사를 조회 할 수 있습니다. </small>
           </CCardHeader>
           <CCardBody>
             <CCard className="mb-2">
@@ -100,12 +127,13 @@ const SurveySearchList = () => {
                     <Select
                       closeMenuOnSelect={false}
                       components={animatedComponents}
-                      defaultValue={[]}
-                      isMulti
+                      defaultValue={1}
                       options={categoryOptionList}
+                      onChange={setSelectedOption}
+
                     />
-                    <CFormInput aria-label="Text input with 2 dropdown buttons" />
-                    <CButton type="submit">검색</CButton>
+                    <CFormInput placeholder='제목을 입력하세요.' value={keyword} onChange={handlekeywordChange}/>
+                    <CButton type="button" onClick={handleClickSearch}>검색</CButton>
                   </CInputGroup>
                 </CForm>
                 <CCard className="mb-3">
@@ -141,40 +169,19 @@ const SurveySearchList = () => {
                     </CTable>
                   </CCardBody>
                 </CCard>
-                <CPagination aria-label="Page navigation example" align="center">
-                  {page.prev ? (
-                    <CPaginationItem aria-label="Previous">
-                      <span aria-hidden="true">
-                        <a href={'/#/survey/search?page=' + page.start - 1}>&laquo;</a>
-                      </span>
-                    </CPaginationItem>
-                  ) : (
-                    <CPaginationItem aria-label="Previous" disabled>
-                      <span aria-hidden="true">&laquo;</span>
-                    </CPaginationItem>
-                  )}
-                  
-                  {page.pagelist.map((idx) =>
-                    idx === page.page ? (
-                      <CPaginationItem active key={idx}>{page.page}</CPaginationItem>
-                    ) : (
-                      <CPaginationItem key={idx}>
-                        <a href={'/#/survey/search?&page=' + idx}>{idx}</a>
-                      </CPaginationItem>
-                    ),
-                  )}
-                  {page.next ? (
-                    <CPaginationItem aria-label="Next">
-                      <span aria-hidden="true">
-                        <a href={'/#/survey/search?page=' + page.end + 1}>&raquo;</a>
-                      </span>
-                    </CPaginationItem>
-                  ) : (
-                    <CPaginationItem aria-label="Next" disabled>
-                      <span aria-hidden="true">&raquo;</span>
-                    </CPaginationItem>
-                  )}
-                </CPagination>
+                
+                {
+                    surveyList.length > 0 ? (<Pagination
+                      activePage={pageData.page}
+                      itemsCountPerPage={pageData.size}
+                      totalItemsCount={pageData.totalElements}
+                      pageRangeDisplayed={10}
+                      prevPageText={"‹"}
+                      nextPageText={"›"}
+                      onChange={handlePageChange}
+                    />) : ''
+                    }
+                     
               </CCardBody>
               </CCard>
             </CCardBody>
