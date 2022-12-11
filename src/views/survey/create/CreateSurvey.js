@@ -44,9 +44,9 @@ const CreateSurvey = () => {
     questions : questions
   }));
 
-  // const { selectedList } = useSelector(({ surveySend }) => ({
-  //   selectedList : surveySend
-  // }));
+  const { selectedList } = useSelector(({ surveySend }) => ({
+    selectedList : surveySend
+  }));
 
   const [validated, setValidated] = useState(false);
 
@@ -106,9 +106,9 @@ const CreateSurvey = () => {
     const surveyTargetList = [];
     if(validated){
       surveyParam.status = "I";
-      // selectedList.forEach(function(member) {
-        // surveyTargetList.push(member.userId);
-      // });
+      selectedList.forEach(function(member) {
+        surveyTargetList.push(member.userId);
+      });
       
     }
     const body ={ 
