@@ -150,6 +150,7 @@ const handleClickSearch = () => {
                           <CTableHeaderCell scope="col">설문참여자</CTableHeaderCell>
                           <CTableHeaderCell scope="col">설문일</CTableHeaderCell>
                           <CTableHeaderCell scope="col">마감일</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">조회수</CTableHeaderCell>
                         </CTableRow>
                       </CTableHead>
                       <CTableBody>
@@ -163,6 +164,7 @@ const handleClickSearch = () => {
                             <CTableDataCell>{data.answer_cnt}명</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.reg_dt)).format('YYYY-MM-DD')}</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.due_dt)).format('YYYY-MM-DD')}</CTableDataCell>
+                            <CTableDataCell>{data.views}회</CTableDataCell>
                           </CTableRow>
                         ))}
                       </CTableBody>
