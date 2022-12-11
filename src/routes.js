@@ -3,6 +3,7 @@ import React from 'react'
 
 const Home = React.lazy(() => import('./views/Home'))
 const Profile = React.lazy(() => import("./views/pages/Profile"))
+const Register = React.lazy(() => import("./views/pages/Register"))
 
 const Search = React.lazy(() => import('./views/survey/search/Search'))
 const PrtcpList = React.lazy(() => import('./views/survey/list/PrtcpList'))
@@ -28,6 +29,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home', element: Home },
 
   // 계정
+  { path: '/auth/register', name: 'Register', element: Register },                                       // 사용자 회원 가입
   { path: '/auth/profile', name: 'Profile', element: Profile },                                       // 사용자 정보 조회
 
   // 설문

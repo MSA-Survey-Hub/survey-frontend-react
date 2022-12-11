@@ -12,6 +12,7 @@ const apiConfig = {
     bestSurvey: service.survey + version + '/survey/best',                                  // 메인화면 설문 리스트 조회
 
     menuList : service.common + version + '/common/menu',                                   // 사이드바 메뉴 리스트 조회
+    jobList : service.common + version + '/common/userJob',                                 // 사용자 직업 리스트 조회
 
     userDetail : service.auth + version + '/user/detail',                                   // 사용자 상세정보 조회
     allUserList : service.auth + version + '/user/allUserList',                                 // 사용자 검색 리스트 조회
