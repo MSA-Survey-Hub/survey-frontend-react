@@ -44,7 +44,7 @@ import {
             <CButton color="primary" variant="outline" className="m-1" size="sm" onClick={(e) => SurveyDetailOnClickHandler(e, '#/survey/detail', data.surId)}>Details</CButton>
             { data.statusName != "제작" ? (  <CButton color="warning" variant="outline" className="m-1" size="sm" onClick={(e) => DuplicateSurveyOnClickHandler(e, '#/survey/create',data.sur_id)}>Copy</CButton>):null}
             { data.statusName == "제작" ? (  <CButton color="success" variant="outline" className="m-1" size="sm">Edit</CButton>):null}
-            <CButton color="danger" variant="outline" className="m-1" size="sm">Remove</CButton>
+            { data.statusName == "제작" ? ( <CButton color="danger" variant="outline" className="m-1" size="sm">Remove</CButton>):null}
         </CCardFooter>
         </CCard>
         </CCol>
