@@ -3,24 +3,25 @@ import axios from "axios";
 import apiConfig from "../lib/apiConfig";
 
 //요청시 AccessToken 계속 보내주기
-// axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use(function (config) {
 
-//   let token = null;
+  let token = null;
 
-//   const user = localStorage.getItem("user");
+  const user = localStorage.getItem("user");
+  console.log(user);
 
-//   if (config.url != apiConfig.refreshToken) {
-//     token = JSON.parse(user).token.access_token;
-//   }
+  if(user){
+    if (config.url != apiConfig.refreshToken) {
+      token = JSON.parse(user).token.access_token;
+    }
+  }
+  if(token !== null){
+    config.headers.Authorization = `Bearer ${token}`;
 
-//   if(token !== null){
-//     config.headers.Authorization = `Bearer ${token}`;
-//     // console.log("Authorization", config.headers.Authorization);
+  }
+  return config;
 
-//   }
-//   return config;
-
-// });
+});
 
 // axios로부터 response를 받아 처리하기 전에 intercept
 axios.interceptors.response.use(
