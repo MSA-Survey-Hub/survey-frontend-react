@@ -13,7 +13,6 @@ const SurveyInfo = ({surInfo}) => {
 
   let statusName = null;
   if(surInfo != null){
-    console.log(new Date() < new Date(surInfo.dueDt));
     statusName =  surInfo.status == "P" ? "제작" : ( new Date() < new Date(surInfo.dueDt)? "배포" : "마감");
   }
   return (

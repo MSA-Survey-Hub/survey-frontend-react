@@ -14,11 +14,16 @@ import {
 import axios from "axios";
 import apiConfig from "../../../../lib/apiConfig";
 import usePromise from "../../../../lib/usePromise";
-const DetailInfo = (props) => {
+import { Alert } from '@coreui/coreui';
+
+
+const UpdateAnswerInfo = (props) => {
   const [answerList, setAnswerList] = useState([])
   const [updateList, setUpdateList] = useState([])
   const { user } = useSelector(({user})=> ({user:user.user}));
-
+  if(user==null){
+    window.location.href="/#";
+  }
   const accessToken = user.token.access_token;
   const userId = user.info.userId;
 
@@ -161,4 +166,4 @@ const DetailInfo = (props) => {
   )
 }
 
-export default DetailInfo
+export default UpdateAnswerInfo

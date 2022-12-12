@@ -15,8 +15,13 @@ import axios from "axios";
 import apiConfig from "../../../../lib/apiConfig";
 import usePromise from "../../../../lib/usePromise";
 
+
 const DetailInfo = ({surId, questionList}) => {
   const { user } = useSelector(({user})=> ({user:user.user}));
+  console.log(user);
+  if(user==null){
+    window.location.href="/#";
+  }
   const userId = user.info.userId;
 
   const [answerList, setAnswerList] = useState([])
