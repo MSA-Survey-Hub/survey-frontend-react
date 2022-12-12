@@ -79,6 +79,21 @@ const SurveyInfo = ({surInfo}) => {
             </CCol>
         </CRow>
         <CRow>
+          <CFormLabel htmlFor="modiYn" className="col-sm-2 col-form-label">
+            답변 수정<br/> 가능 여부
+            </CFormLabel>
+            <CCol sm={10}>
+            <CFormInput
+                type="text"
+                id="modiYn"
+                value={surInfo? (surInfo.isModifyYn=="Y"? "허용" : "비허용") :null}
+                readOnly
+                plainText
+                />
+            </CCol>
+        </CRow>
+
+        <CRow>
             <CFormLabel htmlFor="regDt" className="col-sm-2 col-form-label">
             등록일
             </CFormLabel>

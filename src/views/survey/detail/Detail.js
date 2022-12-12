@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   CButton,
   CCol,
@@ -15,6 +16,7 @@ import {
 
 import SurveyInfo from './info/SurveyInfo';
 import AnswerInfo from './info/AnswerInfo';
+import AnswerReadonlyInfo from './info/AnswerReadonlyInfo';
 import Send from '../create/component/Send';
 import Charts from '../../analysis/user_survey_analysis';
 import { useParams } from 'react-router-dom'; 
@@ -33,17 +35,20 @@ const Detail = () => {
   let surId = params.sur_id;
 
   let surInfo = null;
-  let questionList = []
+  let questionList = [];
+  let answerList = [];
   const [loading, response, error] = usePromise(() => {
     return axios.post(apiConfig.surveyDetail,
       {sur_id: surId},
-      {headers: { 'Content-Type': 'multipart/form-data'}}
+      {headers: { 'Content-Type': 'multipart/form-data'}
+}
     )
   }, []);
 
   if(response != null){
     surInfo = response.data.info;
-    questionList = response.data.question_list
+    questionList = response.data.question_list;
+    answerList = response.data.answer_list;
   }
   let displayStatus = null;
   if(surInfo != null){
@@ -68,9 +73,7 @@ const Detail = () => {
           </CCardHeader>
           <CCardBody>
           <div>
-
             <SurveyInfo surInfo={surInfo}/>
-
             <div
               style={{
                 display: 'flex',
@@ -120,7 +123,8 @@ const Detail = () => {
 
             <CTabContent>
               <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
-                 <AnswerInfo questionList={questionList}/>
+                {answerList.length>0? <AnswerReadonlyInfo answerList={answerList}/> :<AnswerInfo questionList={questionList}/> }
+                
               </CTabPane>
 
               <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
@@ -144,7 +148,11 @@ const Detail = () => {
             
             {displayStatus === "I"? (<>
               <CButton color="info" variant="outline"> excel download</CButton>
-              <CButton color="primary" className="ms-auto" variant="outline"  onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/register', surId)}>participate</CButton>
+              { answerList.length> 0 ? 
+                 (surInfo.isModifyYn ? (<CButton color="primary" className="ms-auto" variant="outline"  onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/edit', surId)}>edit answer</CButton>)
+                               : null)
+              :(<CButton color="primary" className="ms-auto" variant="outline"  onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/register', surId)}>register answer</CButton>)
+              }
               </>
             ):null}
       
