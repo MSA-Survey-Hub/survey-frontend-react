@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   CAvatar,
   CBadge,
@@ -10,6 +10,7 @@ import {
   CDropdownToggle,
 } from '@coreui/react'
 import {
+  cilDiamond,
   cilBell,
   cilCreditCard,
   cilCommentSquare,
@@ -24,13 +25,26 @@ import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/test_profile.jpeg'
 import {useSelector} from "react-redux";
+import axios from "axios";
+import apiConfig from "../../lib/apiConfig";
 
 const AppHeaderDropdown = () => {
   const { user } = useSelector(({user})=> ({user:user.user}));
+  const [imageUrl, setImageUrl] = useState("");
+  useState( async () => {
+    await axios.get(
+      apiConfig.userDetail,
+      {params:{user_id: user.info.userId}},
+      {headers: {"Content-Type": "multipart/form-data"}}
+    ).then((response) => {
+      setImageUrl(response.data.imageUrl)
+    })
+  })
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={user.info.imageUrl} size="md" />
+        <CAvatar src={imageUrl} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         {/* <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
@@ -66,6 +80,10 @@ const AppHeaderDropdown = () => {
         <CDropdownItem href="/#/auth/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
+        </CDropdownItem>
+        <CDropdownItem href="/#/">
+          <CIcon icon={cilDiamond} className="me-2" />
+          Point
         </CDropdownItem>
         {/* <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />

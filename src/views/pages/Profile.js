@@ -7,13 +7,24 @@ import {
   CInputGroupText, CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import {
+  cilAt,
+  cilCheck,
+  cilFactory,
+  cilHappy,
+  cilHeart,
+  cilImage,
+  cilLockLocked,
+  cilPhone,
+  cilUser
+} from '@coreui/icons'
 import axios from "axios";
 import apiConfig from "../../lib/apiConfig";
 import {useSelector} from "react-redux";
 
 const Profile = () => {
   const { user } = useSelector(({user})=> ({user:user.user}));
+  const userId = user.info.userId
   const [jobList, setJobList] = useState([]);
 
   useState(async () => {
@@ -23,13 +34,27 @@ const Profile = () => {
       })
   })
 
-  const [userId, setUserId] = useState(user.info.userId);
-  const [name, setName] = useState(user.info.name);
-  const [job, setJob] = useState(user.info.job);
-  const [age, setAge] = useState(user.info.age);
-  const [gender, setGender] = useState(user.info.gender);
-  const [phone, setPhone] = useState(user.info.phone);
-  const [mailAddr, setMailAddr] = useState(user.info.mailAddr);
+  useState( async () => {
+    await axios.get(
+      apiConfig.userDetail,
+      {params:{user_id: userId}},
+      {headers: {"Content-Type": "multipart/form-data"}}
+    ).then((response) => {
+      setName(response.data.name)
+      setJob(response.data.job)
+      setAge(response.data.age)
+      setGender(response.data.gender)
+      setPhone(response.data.phone)
+      setMailAddr(response.data.mailAddr)
+    })
+  })
+
+  const [name, setName] = useState("");
+  const [job, setJob] = useState("");
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [mailAddr, setMailAddr] = useState("");
   // const [acceptPhone, setAcceptPhone] = useState(true);
   // const [acceptMailAddr, setAcceptM ailAddr] = useState(true);
   const [userPwd, setUserPwd] = useState("");
@@ -57,6 +82,8 @@ const Profile = () => {
       setAlertColor("success")
       setAlertMessage(response.data)
       setAlertVisible(true)
+      window.location.reload()
+
     }).catch((error) => {
       setAlertColor("danger")
       setAlertMessage(error.response.data)
@@ -85,14 +112,13 @@ const Profile = () => {
             <CFormLabel>아이디</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilCheck} />
               </CInputGroupText>
               <CFormInput
                 autoComplete="username"
                 type="text"
                 placeholder="아이디를 입력하세요"
                 value={userId}
-                onChange= {(e) => {setUserId(e.target.value)}}
               />
             </CInputGroup>
 
@@ -115,7 +141,9 @@ const Profile = () => {
               <strong><CFormCheck readOnly checked label="수신동의"/></strong>
             </div>
             <CInputGroup className="mb-3">
-              <CInputGroupText>@</CInputGroupText>
+              <CInputGroupText>
+                <CIcon icon={cilAt} />
+              </CInputGroupText>
               <CFormInput
                 type="email"
                 placeholder="이메일을 입력하세요"
@@ -151,7 +179,7 @@ const Profile = () => {
             <CFormLabel>프로필 이미지</CFormLabel>
             <CInputGroup className="mb-4">
               <CInputGroupText>
-                <CIcon icon={cilLockLocked} />
+                <CIcon icon={cilImage} />
               </CInputGroupText>
               <CFormInput
                 type="file"
@@ -165,7 +193,7 @@ const Profile = () => {
             </div>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilPhone} />
               </CInputGroupText>
               <CFormInput
                 type="tel"
@@ -180,7 +208,7 @@ const Profile = () => {
             <CFormLabel>나이</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilHappy} />
               </CInputGroupText>
               <CFormInput
                 type="number"
@@ -193,19 +221,19 @@ const Profile = () => {
             <CFormLabel>성별</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilHeart} />
               </CInputGroupText>
               <CFormSelect onChange={(e) => {setGender(e.target.value)}}>
                 <option>성별을 선택하세요</option>
-                <option selected={gender == "W"?true:false}>여자</option>
-                <option selected={gender == "M"?true:false}>남자</option>
+                <option value="W" selected={gender == "W"?true:false}>여자</option>
+                <option value="M" selected={gender == "M"?true:false}>남자</option>
               </CFormSelect>
             </CInputGroup>
 
             <CFormLabel>직업</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilFactory} />
               </CInputGroupText>
               <CFormSelect onChange={(e) => {setJob(e.target.value)}}>
                 <option>직업을 선택하세요</option>
