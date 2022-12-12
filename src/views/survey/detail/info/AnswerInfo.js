@@ -17,7 +17,7 @@ const AnswerInfo = ({questionList}) => {
 
   return (
     <div className="mt-3">
-        <CAccordion alwaysOpen>
+        <CAccordion activeItemKey={1} flush>
           {questionList.map((question, index) => (
             <CAccordionItem itemKey={index+1} key={question.queId}>
               <CAccordionHeader>{index+1}. {question.content} </CAccordionHeader>

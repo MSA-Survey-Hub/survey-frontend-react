@@ -14,9 +14,9 @@ import {
 } from '@coreui/react'
 
 import SurveyInfo from './info/SurveyInfo';
-import QuestionInfo from './info/QuestionInfo';
-import Charts from '../../analysis/user_survey_analysis';
 import AnswerInfo from './info/AnswerInfo';
+import Send from '../create/component/Send';
+import Charts from '../../analysis/user_survey_analysis';
 import { useParams } from 'react-router-dom'; 
 
 
@@ -45,9 +45,17 @@ const Detail = () => {
     surInfo = response.data.info;
     questionList = response.data.question_list
   }
+  let displayStatus = null;
+  if(surInfo != null){
+    displayStatus =  surInfo.status == "P" ? "P" : ( new Date() < new Date(surInfo.dueDt)? "I" : "F");
+  }
 
   const SurveyparticipateOnClickHandler = (e, link,sur_id) => {
     window.location.href = link+"/"+sur_id;
+  }
+
+  function removeSurvey(){
+
   }
   
   return (
@@ -78,9 +86,24 @@ const Detail = () => {
                     active={activeKey === 1}
                     onClick={() => setActiveKey(1)}
                   >
-                    설문 조회
+                    질문 조회
                   </CNavLink>
                 </CNavItem>
+
+                {displayStatus === "P"?
+                (
+                  <CNavItem>
+                    <CNavLink
+                      href="javascript:void(0);"
+                      active={activeKey === 2}
+                      onClick={() => setActiveKey(2)}
+                    >
+                      설문 배포
+                    </CNavLink>
+                  </CNavItem>
+                  )
+                  :
+                (
                 <CNavItem>
                   <CNavLink
                     href="javascript:void(0);"
@@ -90,6 +113,8 @@ const Detail = () => {
                     설문 결과
                   </CNavLink>
                 </CNavItem>
+                )}
+
               </CNav>
             </div>
 
@@ -99,28 +124,34 @@ const Detail = () => {
               </CTabPane>
 
               <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
-                <Charts surId={surId}/>
+                {displayStatus === "P"?
+                  <Send/>: <Charts surId={surId}/>}
               </CTabPane>
 
             </CTabContent>
 
             <CCol lg={12} className="text-start d-flex mt-3">
-              {/* <CButton color="danger" href="#" variant="outline" onClick={removeAnswer}>
-                delete
-              </CButton> */}
-              {/* <CButton color="warning" href="#" variant="outline">
-                copy
-              </CButton>  */}
-              {/* <CButton color="primary" href="/#/survey/ModifySurvey" className="ms-auto" variant="outline">
-                edit
-              </CButton> */}
-              <CButton color="primary" className="ms-auto" variant="outline"
-                onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/register', surId)}>
-                participate
-              </CButton>
-              {/* <CButton color="success" href="#" variant="outline">
-                excel download
-              </CButton> */}
+
+            {/*  */}
+            {/* <CButton color="warning"  variant="outline"> copy </CButton>  */}
+
+            {displayStatus === "P"? (<>
+              <CButton color="danger"  variant="outline" onClick={removeSurvey}> delete </CButton>
+              <CButton color="success" href="/#/survey/ModifySurvey" variant="outline"> edit</CButton>
+              <CButton color="primary" className="ms-auto" > distribute </CButton>
+              </>
+            ):null}
+            
+            {displayStatus === "I"? (<>
+              <CButton color="info" variant="outline"> excel download</CButton>
+              <CButton color="primary" className="ms-auto" variant="outline"  onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/register', surId)}>participate</CButton>
+              </>
+            ):null}
+      
+            {displayStatus === "F"? (
+              <CButton color="info" variant="outline"> excel download</CButton>
+            ):null}
+      
           </CCol>
           </div>
           </CCardBody>

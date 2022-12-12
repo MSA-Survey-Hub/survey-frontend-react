@@ -170,7 +170,7 @@ const handleClickSearch = () => {
                             <CTableDataCell>{data.reg_id}</CTableDataCell>
                             <CTableDataCell>{data.answer_cnt}명</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.reg_dt)).format('YYYY-MM-DD')}</CTableDataCell>
-                            <CTableDataCell>{moment(new Date(data.due_dt)).format('YYYY-MM-DD')}</CTableDataCell>
+                            <CTableDataCell>{moment(new Date(data.due_dt)).format('YYYY-MM-DD HH:MM:SS')}</CTableDataCell>
                             <CTableDataCell>{data.is_private =="Y"? "지정":"전체"}</CTableDataCell>
                             <CTableDataCell>{data.views}</CTableDataCell>
                           </CTableRow>

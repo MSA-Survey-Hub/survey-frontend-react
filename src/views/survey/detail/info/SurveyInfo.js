@@ -87,7 +87,7 @@ const SurveyInfo = ({surInfo}) => {
             <CFormInput
                 type="text"
                 id="regDt"
-                value={surInfo ? moment(new Date(surInfo.regDt)).format('YYYY-MM-DD'):null}
+                value={surInfo ? moment(new Date(surInfo.regDt)).format('YYYY-MM-DD HH:MM:SS'):null}
                 readOnly
                 plainText
                 />
@@ -101,7 +101,7 @@ const SurveyInfo = ({surInfo}) => {
             <CFormInput
                 type="text"
                 id="regDt"
-                value={surInfo ?moment(new Date(surInfo.dueDt)).format('YYYY-MM-DD'):null}
+                value={surInfo ?moment(new Date(surInfo.dueDt)).format('YYYY-MM-DD HH:MM:SS'):null}
                 readOnly
                 plainText
                 />
