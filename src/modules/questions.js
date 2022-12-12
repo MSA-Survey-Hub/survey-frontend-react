@@ -36,21 +36,7 @@ List([
         content : "",
         optionList : []
     }),
-    Map({
-        id : 2,
-        questionType : "NumOnly",
-        content : "",
-        optionList :[
-            Map({
-                queOptId : 1,
-                optionName : ""
-            }), 
-            Map({
-                queOptId : 2,
-                optionName : ""
-            }), 
-        ]
-    }),
+   
   ]);
 
 
