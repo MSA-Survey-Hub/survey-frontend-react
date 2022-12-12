@@ -15,6 +15,7 @@ import {
   CTableHeaderCell,
   CRow,
   CCol,
+  CBadge,
 } from '@coreui/react'
 import axios from "axios";
 import apiConfig from 'src/lib/apiConfig';
@@ -116,7 +117,7 @@ const handleClickSearch = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong> 설문 검색 </strong>
+            <strong> 설문 리스트 </strong>
             <small> 배포된 설문조사를 조회 할 수 있습니다. </small>
           </CCardHeader>
           <CCardBody>
@@ -137,20 +138,22 @@ const handleClickSearch = () => {
                   </CInputGroup>
                 </CForm>
                 <CCard className="mb-3">
-                  <CCardHeader>검색 목록</CCardHeader>
+                  <CCardHeader>목록</CCardHeader>
                   <CCardBody>
                     <CTable className="table-hover">
                       <CTableHead>
                         <CTableRow>
                           <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문분류</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문명</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문내용</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문생성자</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문참여자</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">설문일</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">분류</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">이름</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">설명</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">상태</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">생성자</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">참여</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">등록일</CTableHeaderCell>
                           <CTableHeaderCell scope="col">마감일</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">조회수</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">대상</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">조회</CTableHeaderCell>
                         </CTableRow>
                       </CTableHead>
                       <CTableBody>
@@ -160,11 +163,16 @@ const handleClickSearch = () => {
                             <CTableDataCell>{data.content}</CTableDataCell>
                             <CTableDataCell>{data.title}</CTableDataCell>
                             <CTableDataCell>{data.description}</CTableDataCell>
+                            <CTableDataCell>
+                            <CBadge color={ data.status == "P" ?  "success" : (new Date() < new Date(data.due_dt)? "primary" : "danger") }>
+                              { data.status == "P" ? "제작" : ( new Date() < new Date(data.due_dt)? "배포" : "마감")}</CBadge>
+                            </CTableDataCell>
                             <CTableDataCell>{data.reg_id}</CTableDataCell>
                             <CTableDataCell>{data.answer_cnt}명</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.reg_dt)).format('YYYY-MM-DD')}</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.due_dt)).format('YYYY-MM-DD')}</CTableDataCell>
-                            <CTableDataCell>{data.views}회</CTableDataCell>
+                            <CTableDataCell>{data.is_private =="Y"? "지정":"전체"}</CTableDataCell>
+                            <CTableDataCell>{data.views}</CTableDataCell>
                           </CTableRow>
                         ))}
                       </CTableBody>

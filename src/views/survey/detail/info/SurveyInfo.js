@@ -4,29 +4,38 @@ import {
   CFormInput,
   CCol,
   CRow,
+  CBadge,
 } from '@coreui/react'
 import moment from 'moment';
 
 const SurveyInfo = ({surInfo}) => {
   console.log(surInfo);
 
+  let statusName = null;
+  if(surInfo != null){
+    console.log(new Date() < new Date(surInfo.dueDt));
+    statusName =  surInfo.status == "P" ? "제작" : ( new Date() < new Date(surInfo.dueDt)? "배포" : "마감");
+  }
   return (
     <div>
         <CRow>
             <CFormLabel htmlFor="surveyName" className="col-sm-2 col-form-label">
             설문명
             </CFormLabel>
-            <CCol sm={10}>
-            <CFormInput
-                type="text"
-                id="surveyName"
-                value={surInfo? surInfo.title:null}
-                readOnly
-                plainText
-                />
+            <CCol sm={9}>
+              <CFormInput
+                  type="text"
+                  id="surveyName"
+                  value={surInfo? surInfo.title:null}
+                  readOnly
+                  plainText
+                  />
             </CCol>
+            <CCol sm={1}>
+              <CBadge color={ surInfo? ( statusName == "제작" ?  "success" : (statusName == "배포"? "primary" : "danger")):null}> {statusName} </CBadge>
+          </CCol>
         </CRow>
-
+        
         <CRow>
             <CFormLabel htmlFor="category" className="col-sm-2 col-form-label">
             카테고리
