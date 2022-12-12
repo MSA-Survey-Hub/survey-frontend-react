@@ -28,6 +28,7 @@ import Loading from 'src/lib/Loading/Loading';
 
 
 const CreateSurvey = () => {
+  
   const navigate = useNavigate();
 
   const [activeKey, setActiveKey] = useState(1);
@@ -43,7 +44,6 @@ const CreateSurvey = () => {
   const { questions } = useSelector(({ questions }) => ({
     questions : questions
   }));
-
   const { selectedList } = useSelector(({ surveySend }) => ({
     selectedList : surveySend
   }));
@@ -123,9 +123,7 @@ const CreateSurvey = () => {
       axios.post(apiConfig.createSurvey, body, {headers: headers})
         .then((response) => {
           addToast(surveyToast("설문조사가 등록되었습니다."));
-          setTimeout(()=>{  
-            navigate('/#/survey/makeList');
-          }, 1000);
+          navigate('/survey/makeList');
         })
     } catch (e){
       setLoading(false);
@@ -169,7 +167,7 @@ const CreateSurvey = () => {
                     active={activeKey === 3}
                     onClick={() => setActiveKey(3)}
                   >
-                    설문 발송
+                    설문 배포
                   </CNavLink>
                 </CNavItem>
               </CNav>

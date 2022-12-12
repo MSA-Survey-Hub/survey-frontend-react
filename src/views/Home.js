@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   CImage,
   CCarousel,
@@ -21,20 +22,18 @@ import {
   CFormLabel,
   CFormInput,
   CFormSelect,
-} from '@coreui/react'
+} from '@coreui/react';
 import usePromise from "../lib/usePromise";
 import axios from "axios";
 import apiConfig from "../lib/apiConfig";
-const image = require("../assets/images/test_img.jpeg")
-const imageArr = [
-  require("../assets/images/test2.png"),
-  require("../assets/images/test3.png"),
-  require("../assets/images/test4.png")
-]
-
-
+const image = require("../assets/images/test_img.jpeg");
+const image2 = require("../assets/images/test2.png");
+const image3 = require("../assets/images/test3.png");
+const testImage = require("../assets/images/test4.png");
 
 const Home = () => {
+  const {user } = useSelector(({user})=> ({user:user.user}));
+
   const [visible, setVisible] = useState(false)
 
   let bestList = []
@@ -43,39 +42,41 @@ const Home = () => {
   }, []);
   if (response != null) {
     bestList = response.data
+    bestList = bestList.filter(x => !!x);
   }
   return (
     <>
      <CRow className="mb-3">
-        <CCarousel controls indicators dark>
+        <CCarousel controls indicators>
           {
-          bestList.map(bestSurvey => {
-            if(bestSurvey != null){
-              return (
-              <>
+          bestList.map(bestSurvey => (
               <CCarouselItem key={bestSurvey.surId}>
                 <CButton href={"/#/survey/detail/"+bestSurvey.surId} color="light">
                   <div className='slider_img_wrap'>
-                    <CImage className="slider_img" src={imageArr[0]} alt="slide 1" />
+                    <CImage className="slider_img" src={testImage}/>
                   </div>
                   <CCarouselCaption className="d-none d-md-block">
-                    <h2>{bestSurvey.surveyCategory.content}</h2>
-                    <h5>{bestSurvey.title}</h5>
+                    <h5>{bestSurvey.surveyCategory.content}</h5>
+                    <h2>{bestSurvey.title}</h2>
                     <p>{bestSurvey.description}</p>
                   </CCarouselCaption>
                 </CButton>
               </CCarouselItem>
-              </>
-              )
-            }
-          })
+              
+           )
+          )
           }
         </CCarousel>
       </CRow>
+    
       <CRow className="mb-3">
-        <CCol>
-          <CCard>
-            <CCardImage orientation="top" src={image}></CCardImage>
+         {user ? 
+        
+         (
+          <>
+        {/*<CCol>
+            <CCard>
+            <CCardImage orientation="top" height={200} src={image}></CCardImage>
             <CCardBody>
               <CCardTitle>설문 생성하기</CCardTitle>
               <CCardText>새로운 설문을 생성해보세요.</CCardText>
@@ -119,10 +120,20 @@ const Home = () => {
               </CModal>
             </CCardBody>
           </CCard>
-        </CCol>
+        </CCol> */}
+        <CCol>
+            <CCard>
+              <CCardImage orientation="top" height={200} src={image3}></CCardImage>
+              <CCardBody>
+                <CCardTitle>설문 리스트</CCardTitle>
+                <CCardText>배포된 설문조사를 조회 할 수 있습니다!</CCardText>
+                <CButton href="/#/survey/search">Go Survey List</CButton>
+              </CCardBody>
+            </CCard>
+          </CCol>
         <CCol>
           <CCard>
-            <CCardImage orientation="top" src={image}></CCardImage>
+            <CCardImage orientation="top" height={200} src={image2}></CCardImage>
             <CCardBody>
               <CCardTitle>설문 생성함</CCardTitle>
               <CCardText>생성한 설문 목록을 볼 수 있습니다.</CCardText>
@@ -132,7 +143,7 @@ const Home = () => {
         </CCol>
         <CCol>
           <CCard>
-            <CCardImage orientation="top" src={image}></CCardImage>
+            <CCardImage orientation="top" height={200} src={image3}></CCardImage>
             <CCardBody>
               <CCardTitle>설문 참여함</CCardTitle>
               <CCardText>참여한 설문 목록을 볼 수 있습니다.</CCardText>
@@ -140,7 +151,44 @@ const Home = () => {
             </CCardBody>
           </CCard>
         </CCol>
+        </>
+            ) :
+            
+            (<>
+              <CCol>
+              <CCard>
+                <CCardImage orientation="top" height={200} src={image}></CCardImage>
+                <CCardBody>
+                  <CCardTitle>회원가입</CCardTitle>
+                  <CCardText>회원가입을 통해 설문조사 서비스를 이용해보세요!</CCardText>
+                  <CButton href="/#/auth/register/">Sign Up</CButton>
+                </CCardBody>
+              </CCard>
+            </CCol>
+            <CCol>
+              <CCard>
+                <CCardImage orientation="top" height={200} src={image2}></CCardImage>
+                <CCardBody>
+                  <CCardTitle>로그인</CCardTitle>
+                  <CCardText>로그인 페이지로 이동합니다!</CCardText>
+                  <CButton href="/#/login">Sign In</CButton>
+                </CCardBody>
+              </CCard>
+            </CCol>
+            <CCol>
+              <CCard>
+                <CCardImage orientation="top" height={200} src={image3}></CCardImage>
+                <CCardBody>
+                  <CCardTitle>설문 리스트</CCardTitle>
+                  <CCardText>배포된 설문조사를 조회 할 수 있습니다!</CCardText>
+                  <CButton href="/#/survey/search">Go List</CButton>
+                </CCardBody>
+              </CCard>
+            </CCol>
+            </>
+            )}
       </CRow>
+  
 
     </>
   )

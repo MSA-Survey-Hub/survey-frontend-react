@@ -45,7 +45,7 @@ const AppHeader = () => {
            <AppHeaderDropdown />
         ):(
           <CNavItem>
-            <CNavLink href="/#/login">Login</CNavLink>
+            <CNavLink href="/#/login">SIGNIN</CNavLink>
           </CNavItem> 
         )}
         </CHeaderNav>
