@@ -23,12 +23,14 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/test_profile.jpeg'
+import {useSelector} from "react-redux";
 
 const AppHeaderDropdown = () => {
+  const { user } = useSelector(({user})=> ({user:user.user}));
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={user.info.imageUrl} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         {/* <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
