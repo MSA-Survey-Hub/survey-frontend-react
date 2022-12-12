@@ -15,7 +15,8 @@ const apiConfig = {
     jobList : service.common + version + '/common/userJob',                                 // 사용자 직업 리스트 조회
 
     userDetail : service.auth + version + '/user/detail',                                   // 사용자 상세정보 조회
-    allUserList : service.auth + version + '/user/allUserList',                                 // 사용자 검색 리스트 조회
+    allUserList : service.auth + version + '/user/allUserList',                             // 사용자 검색 리스트 조회
+    modifyUser : service.auth + version + '/user/modify',                                   // 사용자 상세정보 변경
 
     groupList : service.auth + version + '/group/list',                                     // 사용자 그룹 리스트 조회
     allGroupList : service.auth + version + '/group/allList',                               // 사용자 생성 그룹 리스트 조회

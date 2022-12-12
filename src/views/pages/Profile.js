@@ -2,165 +2,267 @@ import React, {useState} from 'react'
 import {
   CButton,
   CCard, CCardHeader, CCardBody, CCardFooter,
-  CForm, CFormInput, CFormLabel, CFormSelect,
+  CForm, CFormInput, CFormLabel, CFormSelect, CFormCheck,
   CInputGroup,
-  CInputGroupText, CFormCheck,
+  CInputGroupText, CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import {useSelector} from "react-redux";
-import usePromise from "../../lib/usePromise";
+import {
+  cilAt,
+  cilCheck,
+  cilFactory,
+  cilHappy,
+  cilHeart,
+  cilImage,
+  cilLockLocked,
+  cilPhone,
+  cilUser
+} from '@coreui/icons'
 import axios from "axios";
 import apiConfig from "../../lib/apiConfig";
+import {useSelector} from "react-redux";
 
 const Profile = () => {
   const { user } = useSelector(({user})=> ({user:user.user}));
-  let jobList = []
+  const userId = user.info.userId
+  const [jobList, setJobList] = useState([]);
 
-  const [loading, response, error] = usePromise(() => {
-    return axios.get(apiConfig.jobList)
-  }, []);
+  useState(async () => {
+    await axios.get(apiConfig.jobList)
+      .then((response) => {
+        setJobList(response.data)
+      })
+  })
 
-  if(response != null){
-    jobList = response.data;
+  useState( async () => {
+    await axios.get(
+      apiConfig.userDetail,
+      {params:{user_id: userId}},
+      {headers: {"Content-Type": "multipart/form-data"}}
+    ).then((response) => {
+      setName(response.data.name)
+      setJob(response.data.job)
+      setAge(response.data.age)
+      setGender(response.data.gender)
+      setPhone(response.data.phone)
+      setMailAddr(response.data.mailAddr)
+    })
+  })
+
+  const [name, setName] = useState("");
+  const [job, setJob] = useState("");
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [mailAddr, setMailAddr] = useState("");
+  // const [acceptPhone, setAcceptPhone] = useState(true);
+  // const [acceptMailAddr, setAcceptM ailAddr] = useState(true);
+  const [userPwd, setUserPwd] = useState("");
+
+  const userInfo = new FormData();
+  userInfo.append("userId", userId);
+  userInfo.append("name", name);
+  userInfo.append("job", job);
+  userInfo.append("age", age);
+  userInfo.append("gender", gender);
+  userInfo.append("phone", phone);
+  userInfo.append("mailAddr", mailAddr);
+  userInfo.append("userRole", "USER");
+  userInfo.append("userPwd", userPwd);
+  userInfo.append("status", 0);
+  userInfo.append("statusInfo", "statusInfo");
+
+
+  const modifyUser = () => {
+    axios.post(
+      apiConfig.modifyUser,
+      userInfo
+    ).then((response) => {
+      console.log(response)
+      setAlertColor("success")
+      setAlertMessage(response.data)
+      setAlertVisible(true)
+      window.location.reload()
+
+    }).catch((error) => {
+      setAlertColor("danger")
+      setAlertMessage(error.response.data)
+      setAlertVisible(true)
+    })
   }
 
-  const formData = new FormData();
+  const [alertVisible, setAlertVisible] = useState(false)
+  const [alertColor, setAlertColor] = useState("")
+  const [alertMessage, setAlertMessage] = useState("")
 
   return (
-    <CCard className="m-4">
-      <CCardHeader><strong>회원 정보</strong><small> 회원 정보를 확인할 수 있습니다. 수정이나 탈퇴가 필요하면 아래의 버튼을 클릭하시오.</small></CCardHeader>
-      <CCardBody className="p-4">
-        <CForm>
+    <>
+      <CAlert
+        visible={alertVisible}
+        color={alertColor}
+        dismissible
+        onClose={() => setAlertVisible(false)}
+      >{alertMessage}</CAlert>
 
-          <CFormLabel>아이디</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormInput
-              readOnly={true}
-              autoComplete="username"
-              type="text"
-              placeholder="아이디를 입력하세요"
-              value={user.info.userId}/>
-          </CInputGroup>
+      <CCard className="mx-4">
+        <CCardHeader><strong>회원 정보</strong><small> 회원 정보를 확인할 수 있습니다. 수정이나 탈퇴가 필요하면 아래의 버튼을 클릭하시오.</small></CCardHeader>
+        <CCardBody className="p-4">
+          <CForm>
 
-          <CFormLabel>이름</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormInput
-              type="text"
-              placeholder="이름을 입력하세요"
-              value={user.info.name}/>
-          </CInputGroup>
+            <CFormLabel>아이디</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilCheck} />
+              </CInputGroupText>
+              <CFormInput
+                autoComplete="username"
+                type="text"
+                placeholder="아이디를 입력하세요"
+                value={userId}
+              />
+            </CInputGroup>
 
-          <div className="d-flex justify-content-between">
-            <CFormLabel>이메일 주소</CFormLabel>
-            <strong><CFormCheck readOnly checked label="수신동의"/></strong>
+
+            <CFormLabel>이름</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilUser} />
+              </CInputGroupText>
+              <CFormInput
+                type="text"
+                placeholder="이름을 입력하세요"
+                value={name}
+                onChange={(e) => {setName(e.target.value)}}
+              />
+            </CInputGroup>
+
+            <div className="d-flex justify-content-between">
+              <CFormLabel>이메일 주소</CFormLabel>
+              <strong><CFormCheck readOnly checked label="수신동의"/></strong>
+            </div>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilAt} />
+              </CInputGroupText>
+              <CFormInput
+                type="email"
+                placeholder="이메일을 입력하세요"
+                value={mailAddr}
+                onChange={(e) => {setMailAddr(e.target.value)}}
+              />
+            </CInputGroup>
+
+            <CFormLabel>비밀번호</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilLockLocked} />
+              </CInputGroupText>
+              <CFormInput
+                autoComplete="current-password"
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                value={userPwd}
+                onChange={(e) => {setUserPwd(e.target.value)}}
+              />
+            </CInputGroup>
+
+            <CFormLabel>비밀번호 확인</CFormLabel>
+            <CInputGroup className="mb-4">
+              <CInputGroupText>
+                <CIcon icon={cilLockLocked} />
+              </CInputGroupText>
+              <CFormInput
+                type="password"
+                placeholder="비밀번호 확인을 입력하세요"/>
+            </CInputGroup>
+
+            <CFormLabel>프로필 이미지</CFormLabel>
+            <CInputGroup className="mb-4">
+              <CInputGroupText>
+                <CIcon icon={cilImage} />
+              </CInputGroupText>
+              <CFormInput
+                type="file"
+                onChange={(e) => {userInfo.append('userImage', e.target.files[0])}}
+              />
+            </CInputGroup>
+
+            <div className="d-flex justify-content-between">
+              <CFormLabel>휴대폰 번호</CFormLabel>
+              <strong><CFormCheck readOnly checked label="수신동의"/></strong>
+            </div>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilPhone} />
+              </CInputGroupText>
+              <CFormInput
+                type="tel"
+                placeholder="휴대폰 번호를 입력하세요"
+                value={phone}
+                onChange={(e) => {setPhone(e.target.value)}}
+              />
+            </CInputGroup>
+
+
+
+            <CFormLabel>나이</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilHappy} />
+              </CInputGroupText>
+              <CFormInput
+                type="number"
+                placeholder="나이를 입력하세요"
+                value={age}
+                onChange={(e) => {setAge(e.target.value)}}
+              />
+            </CInputGroup>
+
+            <CFormLabel>성별</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilHeart} />
+              </CInputGroupText>
+              <CFormSelect onChange={(e) => {setGender(e.target.value)}}>
+                <option>성별을 선택하세요</option>
+                <option value="W" selected={gender == "W"?true:false}>여자</option>
+                <option value="M" selected={gender == "M"?true:false}>남자</option>
+              </CFormSelect>
+            </CInputGroup>
+
+            <CFormLabel>직업</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilFactory} />
+              </CInputGroupText>
+              <CFormSelect onChange={(e) => {setJob(e.target.value)}}>
+                <option>직업을 선택하세요</option>
+                {jobList.map((jobItem) => (
+                  <option
+                    key={jobItem.userJobId}
+                    value={jobItem.content}
+                    selected={job == jobItem.content?true:false}
+                    >
+                    {jobItem.content}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CInputGroup>
+
+          </CForm>
+          <div className="d-flex justify-content-start">
+            <CButton className="mt-3" variant="outline" color="success" onClick={modifyUser}>Modify</CButton>
+            &nbsp;
+            <CButton className="mt-3" variant="outline" color="danger">Delete</CButton>
           </div>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>@</CInputGroupText>
-            <CFormInput
-              type="email"
-              placeholder="이메일을 입력하세요"
-              value={user.info.mailAddr}/>
-          </CInputGroup>
+        </CCardBody>
+      </CCard>
 
-          <CFormLabel>비밀번호</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilLockLocked} />
-            </CInputGroupText>
-            <CFormInput
-              autoComplete="current-password"
-              type="password"
-              placeholder="비밀번호를 입력하세요"/>
-          </CInputGroup>
 
-          <CFormLabel>비밀번호 확인</CFormLabel>
-          <CInputGroup className="mb-4">
-            <CInputGroupText>
-              <CIcon icon={cilLockLocked} />
-            </CInputGroupText>
-            <CFormInput type="password" placeholder="비밀번호 확인을 입력하세요"/>
-          </CInputGroup>
+    </>
 
-          <CFormLabel>프로필 이미지</CFormLabel>
-          <CInputGroup className="mb-4">
-            <CInputGroupText>
-              <CIcon icon={cilLockLocked} />
-            </CInputGroupText>
-            <CFormInput
-              type="file"
-              onChange={(e) => {formData.append('userImage', e.target.files[0])}}
-            />
-          </CInputGroup>
 
-          <div className="d-flex justify-content-between">
-            <CFormLabel>휴대폰 번호</CFormLabel>
-            <strong><CFormCheck readOnly checked label="수신동의"/></strong>
-          </div>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormInput
-              type="tel"
-              placeholder="휴대폰 번호를 입력하세요"
-              value={user.info.phone}/>
-          </CInputGroup>
 
-          <CFormLabel>나이</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormInput
-              type="number"
-              placeholder="나이를 입력하세요"
-              value={user.info.age}/>
-          </CInputGroup>
-
-          <CFormLabel>성별</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormSelect>
-              <option>성별을 선택하세요</option>
-              <option selected={user.info.gender == "W"?true:false}>여자</option>
-              <option selected={user.info.gender == "M"?true:false}>남자</option>
-            </CFormSelect>
-          </CInputGroup>
-
-          <CFormLabel>직업</CFormLabel>
-          <CInputGroup className="mb-3">
-            <CInputGroupText>
-              <CIcon icon={cilUser} />
-            </CInputGroupText>
-            <CFormSelect>
-              <option>직업을 선택하세요</option>
-              {jobList.map((jobItem) => (
-                <option
-                  key={jobItem.userJobId}
-                  selected={user.info.job == jobItem.content?true:false}>
-                  {jobItem.content}
-                </option>
-              ))}
-            </CFormSelect>
-          </CInputGroup>
-
-        </CForm>
-        <div className="d-flex justify-content-start">
-          <CButton className="mt-3" variant="outline" color="success">Modify</CButton>
-          &nbsp;
-          <CButton className="mt-3" variant="outline" color="danger">Delete</CButton>
-        </div>
-      </CCardBody>
-    </CCard>
   )
 }
 

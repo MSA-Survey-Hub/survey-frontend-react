@@ -7,7 +7,17 @@ import {
   CInputGroupText, CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import {
+  cilLockLocked,
+  cilUser,
+  cilImage,
+  cilPhone,
+  cilFactory,
+  cilHappy,
+  cilHeart,
+  cilAt,
+  cilCheck,
+} from '@coreui/icons'
 import axios from "axios";
 import apiConfig from "../../lib/apiConfig";
 
@@ -110,7 +120,7 @@ const Register = () => {
             <CFormLabel>아이디</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilCheck} />
               </CInputGroupText>
               <CFormInput
                 autoComplete="username"
@@ -140,7 +150,9 @@ const Register = () => {
               <strong><CFormCheck readOnly checked label="수신동의"/></strong>
             </div>
             <CInputGroup className="mb-3">
-              <CInputGroupText>@</CInputGroupText>
+              <CInputGroupText>
+                <CIcon icon={cilAt} />
+              </CInputGroupText>
               <CFormInput
                 type="email"
                 placeholder="이메일을 입력하세요"
@@ -176,7 +188,7 @@ const Register = () => {
             <CFormLabel>프로필 이미지</CFormLabel>
             <CInputGroup className="mb-4">
               <CInputGroupText>
-                <CIcon icon={cilLockLocked} />
+                <CIcon icon={cilImage} />
               </CInputGroupText>
               <CFormInput
                 type="file"
@@ -190,7 +202,7 @@ const Register = () => {
             </div>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilPhone} />
               </CInputGroupText>
               <CFormInput
                 type="tel"
@@ -205,7 +217,7 @@ const Register = () => {
             <CFormLabel>나이</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilHappy} />
               </CInputGroupText>
               <CFormInput
                 type="number"
@@ -218,7 +230,7 @@ const Register = () => {
             <CFormLabel>성별</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilHeart} />
               </CInputGroupText>
               <CFormSelect onChange={(e) => {setGender(e.target.value)}}>
                 <option>성별을 선택하세요</option>
@@ -230,7 +242,7 @@ const Register = () => {
             <CFormLabel>직업</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
-                <CIcon icon={cilUser} />
+                <CIcon icon={cilFactory} />
               </CInputGroupText>
               <CFormSelect onChange={(e) => {setJob(e.target.value)}}>
                 <option>직업을 선택하세요</option>
