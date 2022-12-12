@@ -4,7 +4,7 @@ import {
   CCard, CCardHeader, CCardBody, CCardFooter,
   CForm, CFormInput, CFormLabel, CFormSelect,
   CInputGroup,
-  CInputGroupText,
+  CInputGroupText, CFormCheck,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
@@ -25,8 +25,10 @@ const Profile = () => {
     jobList = response.data;
   }
 
+  const formData = new FormData();
+
   return (
-    <CCard className="mx-4">
+    <CCard className="m-4">
       <CCardHeader><strong>회원 정보</strong><small> 회원 정보를 확인할 수 있습니다. 수정이나 탈퇴가 필요하면 아래의 버튼을 클릭하시오.</small></CCardHeader>
       <CCardBody className="p-4">
         <CForm>
@@ -55,7 +57,10 @@ const Profile = () => {
               value={user.info.name}/>
           </CInputGroup>
 
-          <CFormLabel>이메일</CFormLabel>
+          <div className="d-flex justify-content-between">
+            <CFormLabel>이메일 주소</CFormLabel>
+            <strong><CFormCheck readOnly checked label="수신동의"/></strong>
+          </div>
           <CInputGroup className="mb-3">
             <CInputGroupText>@</CInputGroupText>
             <CFormInput
@@ -83,7 +88,21 @@ const Profile = () => {
             <CFormInput type="password" placeholder="비밀번호 확인을 입력하세요"/>
           </CInputGroup>
 
-          <CFormLabel>휴대폰 번호</CFormLabel>
+          <CFormLabel>프로필 이미지</CFormLabel>
+          <CInputGroup className="mb-4">
+            <CInputGroupText>
+              <CIcon icon={cilLockLocked} />
+            </CInputGroupText>
+            <CFormInput
+              type="file"
+              onChange={(e) => {formData.append('userImage', e.target.files[0])}}
+            />
+          </CInputGroup>
+
+          <div className="d-flex justify-content-between">
+            <CFormLabel>휴대폰 번호</CFormLabel>
+            <strong><CFormCheck readOnly checked label="수신동의"/></strong>
+          </div>
           <CInputGroup className="mb-3">
             <CInputGroupText>
               <CIcon icon={cilUser} />
