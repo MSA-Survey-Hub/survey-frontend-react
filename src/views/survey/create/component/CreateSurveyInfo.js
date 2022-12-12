@@ -124,7 +124,7 @@ const CreateSurveyInfo = ({showSendTab}) => {
             <CCol xs={3}>
                 <CFormSelect label="피설문자 로그인 여부" name="login_yn" value={survey.get("isLoginYn")} onChange={onChangeLoginYn}>
                     <option value="Y">로그인 필수</option>
-                    <option value="N">로그인 필요 없음</option>
+                    <option value="N" disabled>로그인 필요 없음</option>
                 </CFormSelect>
             </CCol>
             <CCol xs={3}>
@@ -135,7 +135,7 @@ const CreateSurveyInfo = ({showSendTab}) => {
             </CCol>
             <CCol xs={3}>
                 <CFormSelect label="피설문자 익명 여부" name="annoy_yn" value={survey.get("isAnnoyYn")} onChange={onChangeAnnoyYn}>
-                    <option value="Y">익명 가능</option>
+                    <option value="Y" disabled>익명 가능</option>
                     <option value="N">익명 불가능</option>
                 </CFormSelect>
             </CCol>

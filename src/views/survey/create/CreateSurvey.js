@@ -169,7 +169,7 @@ const CreateSurvey = () => {
                     active={activeKey === 3}
                     onClick={() => setActiveKey(3)}
                   >
-                    설문 발송
+                    설문 배포
                   </CNavLink>
                 </CNavItem>
               </CNav>
