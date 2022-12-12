@@ -26,11 +26,8 @@ import usePromise from "../lib/usePromise";
 import axios from "axios";
 import apiConfig from "../lib/apiConfig";
 const image = require("../assets/images/test_img.jpeg")
-const imageArr = [
-  require("../assets/images/test2.png"),
-  require("../assets/images/test3.png"),
-  require("../assets/images/test4.png")
-]
+const testImage = require("../assets/images/test4.png")
+
 
 
 
@@ -43,20 +40,18 @@ const Home = () => {
   }, []);
   if (response != null) {
     bestList = response.data
+    bestList = bestList.filter(x => !!x);
   }
   return (
     <>
      <CRow className="mb-3">
         <CCarousel controls indicators dark>
           {
-          bestList.map(bestSurvey => {
-            if(bestSurvey != null){
-              return (
-              <>
+          bestList.map(bestSurvey => (
               <CCarouselItem key={bestSurvey.surId}>
                 <CButton href={"/#/survey/detail/"+bestSurvey.surId} color="light">
                   <div className='slider_img_wrap'>
-                    <CImage className="slider_img" src={imageArr[0]} alt="slide 1" />
+                    <CImage className="slider_img" src={image}/>
                   </div>
                   <CCarouselCaption className="d-none d-md-block">
                     <h2>{bestSurvey.surveyCategory.content}</h2>
@@ -65,10 +60,9 @@ const Home = () => {
                   </CCarouselCaption>
                 </CButton>
               </CCarouselItem>
-              </>
-              )
-            }
-          })
+              
+           )
+          )
           }
         </CCarousel>
       </CRow>
