@@ -23,26 +23,27 @@ const Charts = (props) => {
     for (let analysisId = 1; analysisId < 5; analysisId++) {
         const response = await axios.post(`${apiConfig.surveyAnalysisData}?analysis_Id=${analysisId}&sur_id=${props.surId}`)
 
-        Data['subject'] = response.data[0].analysisId.subject
+        console.log("hihihi", response.data)
+        Data['subject'] = response.data.subject[0].subject
 
         let Data_labels = []
         let Data_values = []
 
-        response.data.map(data =>{
-          Data_labels.push(data.optionName)
-          Data_values.push(data.value)
+        response.data.option.map(option =>{
+          Data_labels.push(option.optionName)
+          Data_values.push(option.value)
         })
         Data['labels'] = Data_labels
         Data['values'] = Data_values
 
         if (analysisId ===1){
-          setOne({'subject':response.data[0].analysisId.subject, 'label':Data_labels, 'value':Data_values});
+          setOne({'subject':response.data.subject[0].subject, 'label':Data_labels, 'value':Data_values});
         } else if (analysisId ===2){
-          setTwo({'subject':response.data[0].analysisId.subject, 'label':Data_labels, 'value':Data_values});
+          setTwo({'subject':response.data.subject[0].subject, 'label':Data_labels, 'value':Data_values});
         } else if (analysisId ===3){
-          setThree({'subject':response.data[0].analysisId.subject, 'label':Data_labels, 'value':Data_values});
+          setThree({'subject':response.data.subject[0].subject, 'label':Data_labels, 'value':Data_values});
         } else if (analysisId ===4){
-          setFour({'subject':response.data[0].analysisId.subject, 'label':Data_labels, 'value':Data_values});
+          setFour({'subject':response.data.subject[0].subject, 'label':Data_labels, 'value':Data_values});
         }
 
     }
