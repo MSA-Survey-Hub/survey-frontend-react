@@ -1,122 +1,133 @@
 import React, { useState, useEffect } from 'react'
 import {
   CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
+  CCard, CCardBody, CCardHeader, CCardFooter,
   CCol,
   CForm,
   CFormInput,
   CFormLabel,
   CFormTextarea,
   CRow,
+  CTable, CTableHead, CTableBody,
   CListGroup,
   CListGroupItem,
-  CImage,
+  CImage, CTableHeaderCell, CTableRow, CTableDataCell,
 } from '@coreui/react'
 
 import ReactImg from 'src/assets/images/test_img.jpeg'
 import axios from 'axios';
+import apiConfig from "../../../lib/apiConfig";
+import {useParams} from "react-router-dom";
 
-const FormControl = () => {
+const GroupDetail = () => {
+  const params = useParams();
+  const [groupDetail, setGroupDetail] = useState(null);
 
-  const current = decodeURI(window.location.href);
-  const id = current.split("/")[6];
-  let [groupId, setGroupId] = useState(id)
-  let [data, setData] = useState();
+  useState(async () => {
+    await axios.get(apiConfig.groupDetail + "/" + params.group_id)
+      .then((response) => {
+        setGroupDetail(response.data)
+      })
+  })
 
-  console.log(`/auth-service/v1/group/detail/${groupId}`)
+  const modifyGroup = () => {
 
-  const groupInfo = async ()=>{
-    const response = await axios.get(`/auth-service/v1/group/detail/${groupId}`)
-    console.log(response)
-    setData(response.data)
-    localStorage.setItem('detail', JSON.stringify(response.data))
   }
 
-  groupInfo()
+  const deleteGroup = () => {
 
-  let A = JSON.parse(localStorage.getItem('detail'))
-  const test = A.userList.map(userInfo =>{
-    return(
-      <CListGroupItem className="d-flex" key={userInfo.name}>
-        <span>{userInfo.name} ({userInfo.mailAddr})</span>
-      </CListGroupItem>
-  )}
-  )
+  }
 
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong> 그룹 상세 </strong>
-            <small> 그룹의 상세정보를 조회 할 수 있습니다. </small>
+            <strong>그룹 상세 </strong>
+            <small> 그룹의 상세정보를 조회 할 수 있습니다.</small>
           </CCardHeader>
           <CCardBody>
             <CForm>
+
               <CRow className="mb-3">
-                <CFormLabel htmlFor="groupName" className="col-sm-2 col-form-label">
-                  그룹명
-                </CFormLabel>
-                <div className="col-sm-10">
+                <CFormLabel className="col-sm-3">그룹명</CFormLabel>
+                <div className="col-sm-9">
                   <CFormInput
                     type="text"
-                    id="groupName"
-                    placeholder="그룹명"
-                    value={A.groupName}
-                    readOnly
+                    value={groupDetail?groupDetail.groupName:null}
                   />
                 </div>
               </CRow>
+
               <CRow className="mb-3">
-                <CFormLabel htmlFor="formFile" className="col-sm-2 col-form-label">
-                  그룹 이미지 첨부
-                </CFormLabel>
-                <div className="col-sm-10">
-                  <div className="clearfix">
-                    <CImage align="center" rounded src={ReactImg} width={200} />
-                  </div>
+                <CFormLabel className="col-sm-3">그룹생성자</CFormLabel>
+                <div className="col-sm-9">
+                  <CFormInput
+                    type="text"
+                    value={groupDetail?groupDetail.regId:null}
+                  />
+                </div>
+              </CRow>
+
+              <CRow className="mb-3">
+                <CFormLabel className="col-sm-3">그룹 이미지</CFormLabel>
+                <div className="col-sm-9">
+                  <CImage className="mb-3" align="center" rounded src={ReactImg} width="100%" />
+                  <CFormInput type="file"/>
                 </div>
               </CRow>
               <CRow className="mb-3">
-                <CFormLabel htmlFor="groupDescription" className="col-sm-2 col-form-label">
-                  그룹 설명
-                </CFormLabel>
-                <div className="col-sm-10">
-                  <CFormTextarea id="groupDescription" rows="3" readOnly>
-                    {A.groupDescription}
+                <CFormLabel className="col-sm-3">그룹 설명</CFormLabel>
+                <div className="col-sm-9">
+                  <CFormTextarea>
+                    {groupDetail?groupDetail.groupDescription:null}
                   </CFormTextarea>
                 </div>
               </CRow>
               <CRow className="mb-3">
-                <CFormLabel htmlFor="groupDescription" className="col-sm-2 col-form-label">
-                  그룹 참여자
-                </CFormLabel>
-                <div className="col-sm-10">
-                  <CRow>
-                    <CCol lg={12}>
-                      <CListGroup className="mb-1 custom_height">                   
-                        {test}
-                      </CListGroup>
-                    </CCol>
-                  </CRow>
+                <CFormLabel className="col-sm-3">그룹 참여자</CFormLabel>
+                <div className="col-sm-9">
+                    <CTable>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">아이디</CTableHeaderCell>
+                          <CTableHeaderCell scope="col">이름</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {groupDetail?groupDetail.prtcpList.map((user, index) => (
+                          <CTableRow key={user.user_id}>
+                            <CTableDataCell>{index+1}</CTableDataCell>
+                            {groupDetail.regId === user.userId?
+                              <CTableDataCell><strong>{user.userId}</strong><small>(생성자)</small></CTableDataCell>:
+                              <CTableDataCell>{user.userId}</CTableDataCell>
+                            }
+                            <CTableDataCell>{user.name}</CTableDataCell>
+                          </CTableRow>
+                        )):null}
+                      </CTableBody>
+                    </CTable>
+
                 </div>
               </CRow>
             </CForm>
+
+          </CCardBody>
+          <CCardFooter>
             <CCol lg={12} className="text-end d-flex">
-              <CButton color="danger" href="#" variant="outline">
+              <CButton color="danger" variant="outline" onClick={deleteGroup}>
                 delete
               </CButton>
-              <CButton color="success" href="#" className="ms-auto" variant="outline">
+              <CButton color="success" className="ms-auto" variant="outline" onClick={modifyGroup}>
                 edit
               </CButton>
             </CCol>
-          </CCardBody>
+          </CCardFooter>
         </CCard>
       </CCol>
     </CRow>
   )
 }
 
-export default FormControl
+export default GroupDetail
