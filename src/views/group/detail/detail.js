@@ -72,7 +72,7 @@ const GroupDetail = () => {
               <CRow className="mb-3">
                 <CFormLabel className="col-sm-3">그룹 이미지</CFormLabel>
                 <div className="col-sm-9">
-                  <CImage className="mb-3" align="center" rounded src={ReactImg} width="100%" />
+                  <CImage className="mb-3" align="center" rounded src={groupDetail?groupDetail.groupImageUrl:null} width="100%" />
                   <CFormInput type="file"/>
                 </div>
               </CRow>
@@ -87,27 +87,27 @@ const GroupDetail = () => {
               <CRow className="mb-3">
                 <CFormLabel className="col-sm-3">그룹 참여자</CFormLabel>
                 <div className="col-sm-9">
-                    <CTable>
-                      <CTableHead>
-                        <CTableRow>
-                          <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">아이디</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">이름</CTableHeaderCell>
+                  <CTable>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">아이디</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">이름</CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {groupDetail?groupDetail.prtcpList.map((user, index) => (
+                        <CTableRow key={user.user_id}>
+                          <CTableDataCell>{index+1}</CTableDataCell>
+                          {groupDetail.regId === user.userId?
+                            <CTableDataCell><strong>{user.userId}</strong><small>(생성자)</small></CTableDataCell>:
+                            <CTableDataCell>{user.userId}</CTableDataCell>
+                          }
+                          <CTableDataCell>{user.name}</CTableDataCell>
                         </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        {groupDetail?groupDetail.prtcpList.map((user, index) => (
-                          <CTableRow key={user.user_id}>
-                            <CTableDataCell>{index+1}</CTableDataCell>
-                            {groupDetail.regId === user.userId?
-                              <CTableDataCell><strong>{user.userId}</strong><small>(생성자)</small></CTableDataCell>:
-                              <CTableDataCell>{user.userId}</CTableDataCell>
-                            }
-                            <CTableDataCell>{user.name}</CTableDataCell>
-                          </CTableRow>
-                        )):null}
-                      </CTableBody>
-                    </CTable>
+                      )):null}
+                    </CTableBody>
+                  </CTable>
 
                 </div>
               </CRow>
