@@ -28,6 +28,7 @@ import Loading from 'src/lib/Loading/Loading';
 
 
 const CreateSurvey = () => {
+  
   const navigate = useNavigate();
 
   const [activeKey, setActiveKey] = useState(1);
@@ -43,7 +44,6 @@ const CreateSurvey = () => {
   const { questions } = useSelector(({ questions }) => ({
     questions : questions
   }));
-
   const { selectedList } = useSelector(({ surveySend }) => ({
     selectedList : surveySend
   }));

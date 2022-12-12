@@ -15,9 +15,10 @@ const EDIT_PRIVATE_YN = 'survey/deit_private_yn';
 const EDIT_MODIFY_YN = 'survey/deit_modify_yn';
 const EDIT_ANNOY_YN = 'survey/deit_annoy_yn';
 const EDIT_DESCRIPTION = 'survey/deit_description';
+const INITIALIZE_FORM = 'survey/INITIALIZE_FORM';
 
 
-
+export const initializeForm = createAction(INITIALIZE_FORM);
 export const editTitle = createAction(EDIT_TITLE,({value, name}) => ({
     value, name
 }));
@@ -69,9 +70,10 @@ const initialState = Map({
 });
 
 
-
 const survey = handleActions({
-
+    [INITIALIZE_FORM]: (state) => {
+        return initialState;
+      },
     [EDIT_TITLE] : (state, {payload: survey }) => { 
         return state.set("title",survey.value );
     },

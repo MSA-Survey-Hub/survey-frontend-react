@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Question from './Question';
 import { useSelector, useDispatch } from 'react-redux';
 import * as questionActions from "../../../../modules/questions";
@@ -11,6 +11,12 @@ const CreateQuestion = () => {
     questions : questions
   }));
   const nextId = useRef(3); 
+
+
+  useEffect(() => {
+    dispatch(questionActions.initializeForm());
+  }, []);
+
 
   // 질문 추가
   const onInsert = (e) =>{

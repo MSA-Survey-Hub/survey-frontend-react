@@ -9,6 +9,8 @@ const EDIT_QUESTION_CONTENT = 'question/edit_question_content';
 const EDIT_QUESTION_TYPE = 'question/edit_question_type';
 const ADD_ANSWER = 'question/add_answer';
 const DELETE_ANSWER = 'question/delete_answer';
+const INITIALIZE_FORM = 'question/INITIALIZE_FORM';
+
 
 export const addQuestion = createAction(ADD_QUESTION);
 export const deleteQuestion = createAction(DELETE_QUESTION);
@@ -24,6 +26,7 @@ export const addAnswer = createAction(ADD_ANSWER, ({ id, value }) => ({
 export const deleteAnswer = createAction(DELETE_ANSWER, ({ id, aid }) => ({
     id, aid
   }));
+export const initializeForm = createAction(INITIALIZE_FORM);
 
 export function* questionSaga() {
 }
@@ -41,6 +44,11 @@ List([
 
 
 const questions = handleActions({
+
+    [INITIALIZE_FORM]: (state) => {
+        return initialState;
+      },
+
 
     [ADD_QUESTION] : (state, action) => { //질문추가
         const id  = action.payload;

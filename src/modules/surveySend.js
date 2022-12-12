@@ -2,12 +2,11 @@ import { createAction, handleActions } from 'redux-actions';
 import createRequestSaga, { createRequestActionTypes} from '../lib/createRequestSaga';
 import { delay, put, takeLatest, select, throttle } from 'redux-saga/effects';
 import {Map, List} from 'immutable';
-import * as surveyTargetAPI from '../lib/api/survey_target';
 
 
-const ADD_SELECTED_LIST= 'surveyTarget/addSelectedList';
-const DELETE_SELECTED_LIST= 'surveyTarget/deleteSelectedList';
-
+const ADD_SELECTED_LIST= 'surveySend/addSelectedList';
+const DELETE_SELECTED_LIST= 'surveySend/deleteSelectedList';
+const INITIALIZE_FORM = 'surveySend/INITIALIZE_FORM';
 
 export const addSelectedList = createAction(ADD_SELECTED_LIST, ({ member }) => ({
   member
@@ -15,12 +14,16 @@ export const addSelectedList = createAction(ADD_SELECTED_LIST, ({ member }) => (
 export const deleteSelectedList = createAction(DELETE_SELECTED_LIST, ({ member}) => ({
   member
 }));
+export const initializeForm = createAction(INITIALIZE_FORM);
 
 export function* surveySendSaga() {
 }
 const initialState = List([]);
 
 const surveySend = handleActions({
+  [INITIALIZE_FORM]: (state) => {
+    return initialState;
+  },
 
     [ADD_SELECTED_LIST]: (state, { payload: member }) =>  {
       let flag = true;

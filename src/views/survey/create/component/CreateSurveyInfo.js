@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     CFormSelect,
     CFormInput,
@@ -24,6 +24,10 @@ const CreateSurveyInfo = ({showSendTab}) => {
     const { survey } = useSelector(({ survey }) => ({
         survey : survey
     }));
+
+    useEffect(() => {
+        dispatch(surveyActions.initializeForm());
+      }, []);
 
     let categoryList = [];
     const [loading, response, error] = usePromise(() => {
