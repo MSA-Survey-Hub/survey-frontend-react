@@ -28,35 +28,64 @@ const Register = () => {
   const [gender, setGender] = useState("");
   const [phone, setPhone] = useState("");
   const [mailAddr, setMailAddr] = useState("");
+  // const [acceptPhone, setAcceptPhone] = useState(true);
+  // const [acceptMailAddr, setAcceptMailAddr] = useState(true);
   const [userPwd, setUserPwd] = useState("");
-  const [userImage, setUserImage] = useState([])
 
-  const userInfo = {
-    userId: userId,
-    name: name,
-    job: job,
-    age: age,
-    gender: gender,
-    phone: phone,
-    mailAddr: mailAddr,
-    userRole: "USER",
-    userPwd: userPwd,
-    status: 0,
-    statusInfo: null,
-    userImage: []
-  }
+  const formData = new FormData();
+
+  // const userInfo = {
+  //   userId: userId,
+  //   name: name,
+  //   job: job,
+  //   age: age,
+  //   gender: gender,
+  //   phone: phone,
+  //   mailAddr: mailAddr,
+  //   userRole: "USER",
+  //   userPwd: userPwd,
+  //   status: 0,
+  //   statusInfo: null,
+  //   userImage: userImage
+  // }
+
+  const userInfo = new FormData();
+  userInfo.append("userId", userId);
+  userInfo.append("name", name);
+  userInfo.append("job", job);
+  userInfo.append("age", age);
+  userInfo.append("gender", gender);
+  userInfo.append("phone", phone);
+  userInfo.append("mailAddr", mailAddr);
+  userInfo.append("userRole", "USER");
+  userInfo.append("userPwd", userPwd);
+  userInfo.append("status", 0);
+  userInfo.append("statusInfo", "statusInfo");
+
 
   const registerUser = () => {
-    axios.post(apiConfig.signup,
-      userInfo,
-      {headers: { "Content-Type": "application/json" }
-      }).then((response) => {
+    axios.post(
+      apiConfig.signup,
+      userInfo
+      // ,{headers: {"Content-Type":"application/json"}}
+      ).then((response) => {
         window.alert(response.data)
         window.location.replace("/#/login")
+      }).catch((error) => {
+        setAlertColor("danger")
+        setAlertMessage(error.response.data)
+        setAlertVisible(true)
+      })
+  }
+
+  const uploadFile = () => {
+    axios.post(
+      "common-service/v1/common/upload/user",
+      userInfo
+    ).then((response) => {
+      window.location.replace(response.data)
     }).catch((error) => {
-      setAlertColor("danger")
-      setAlertMessage(error.response.data)
-      setAlertVisible(true)
+      console.log(error)
     })
   }
 
@@ -144,15 +173,14 @@ const Register = () => {
                 placeholder="비밀번호 확인을 입력하세요"/>
             </CInputGroup>
 
-            <CFormLabel>이미지</CFormLabel>
+            <CFormLabel>프로필 이미지</CFormLabel>
             <CInputGroup className="mb-4">
               <CInputGroupText>
                 <CIcon icon={cilLockLocked} />
               </CInputGroupText>
               <CFormInput
                 type="file"
-                value={userImage}
-                onChange={(e) => {setUserImage(e.target.value)}}
+                onChange={(e) => {userInfo.append('userImage', e.target.files[0])}}
               />
             </CInputGroup>
 
