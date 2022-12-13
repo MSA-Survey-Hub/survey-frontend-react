@@ -232,7 +232,7 @@ const Grouplist = () => {
               {groupList.map((groupList)=> (
                 <CCol lg={3} key = {groupList.groupId}>
                 <CCard className="mb-3">
-                  <CCardImage orientation="top" src={ReactImg_2} />
+                  <CCardImage orientation="top" src={groupList.groupImageUrl} />
                   <CCardBody>
                     <CCardTitle>{groupList.groupName}</CCardTitle>
                     <CCardText className="text-ellipsis">
@@ -248,10 +248,7 @@ const Grouplist = () => {
                     {groupList.isParticipated === "N" &&(
                       <CButton color="success" variant="outline" size="sm" onClick={(e) => {prtcpGroup(groupList.groupId, loginUser)}}>participate</CButton>
                     )}
-                    {groupList.isParticipated === "Y" && (
-                      <CButton color="primary" href={'#/group/detail/'+groupList.groupId} variant="outline" size="sm">detail</CButton>
-                    )}
-                    {groupList.isCreated === "Y" && (
+                    {(groupList.isCreated == "Y" || groupList.isParticipated == "Y") && (
                       <CButton color="primary" href={'#/group/detail/'+groupList.groupId} variant="outline" size="sm">detail</CButton>
                     )}
                     {groupList.isCreated === "Y" && (
