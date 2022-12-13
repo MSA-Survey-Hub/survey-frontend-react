@@ -149,7 +149,7 @@ const handleClickSearch = () => {
                           <CTableHeaderCell scope="col">설명</CTableHeaderCell>
                           <CTableHeaderCell scope="col">상태</CTableHeaderCell>
                           <CTableHeaderCell scope="col">생성자</CTableHeaderCell>
-                          <CTableHeaderCell scope="col">참여</CTableHeaderCell>
+                          {/* <CTableHeaderCell scope="col">참여</CTableHeaderCell> */}
                           <CTableHeaderCell scope="col">등록일</CTableHeaderCell>
                           <CTableHeaderCell scope="col">마감일</CTableHeaderCell>
                           <CTableHeaderCell scope="col">대상</CTableHeaderCell>
@@ -168,7 +168,7 @@ const handleClickSearch = () => {
                               { data.status == "P" ? "제작" : ( new Date() < new Date(data.due_dt)? "배포" : "마감")}</CBadge>
                             </CTableDataCell>
                             <CTableDataCell>{data.reg_id}</CTableDataCell>
-                            <CTableDataCell>{data.answer_cnt}명</CTableDataCell>
+                            {/* <CTableDataCell>{data.answer_cnt}명</CTableDataCell> */}
                             <CTableDataCell>{moment(new Date(data.reg_dt)).format('YYYY-MM-DD')}</CTableDataCell>
                             <CTableDataCell>{moment(new Date(data.due_dt)).format('YYYY-MM-DD HH:MM:SS')}</CTableDataCell>
                             <CTableDataCell>{data.is_private =="Y"? "지정":"전체"}</CTableDataCell>

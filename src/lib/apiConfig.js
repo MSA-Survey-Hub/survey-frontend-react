@@ -47,6 +47,7 @@ const apiConfig = {
     answerDelete : service.survey + version + '/answer/del',                                // 설문 답변 삭제
     answerList: service.survey + version + '/answer/list',                                  // 설문 답변 조회
     surveyDetail: service.survey + version + '/survey/detail',                              // 설문 상세 조회
+    surveyExcel: service.survey + version + '/survey/download/excel',                     // 설문 결과 엑셀 다운로드
 
     surveyCategoryList: service.survey + version +  '/survey/category/list',                // 설문 카테고리 조회
     surveyCategoryRegister: service.survey + version +  '/survey/category/reg',             // 설문 카테고리 생성

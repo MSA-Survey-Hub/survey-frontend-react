@@ -147,7 +147,7 @@ const Detail = () => {
             ):null}
             
             {displayStatus === "I"? (<>
-              <CButton color="info" variant="outline"> excel download</CButton>
+              <CButton color="info" variant="outline"  href={'http://localhost:9000/survey-service/v1/survey/download/excel?sur_id='+ surId}> excel download</CButton>
               { answerList.length> 0 ? 
                  (surInfo.isModifyYn ? (<CButton color="primary" className="ms-auto" variant="outline"  onClick={(e) => SurveyparticipateOnClickHandler(e, '#/survey/answer/edit', surId)}>edit answer</CButton>)
                                : null)
