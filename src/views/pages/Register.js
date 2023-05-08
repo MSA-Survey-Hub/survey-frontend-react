@@ -33,6 +33,8 @@ const Register = () => {
 
   const [userId, setUserId] = useState("");
   const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [job, setJob] = useState("");
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState("");
@@ -61,7 +63,9 @@ const Register = () => {
 
   const userInfo = new FormData();
   userInfo.append("userId", userId);
-  userInfo.append("name", name);
+  userInfo.append("name", firstName+lastName)
+  userInfo.append("firstName", firstName);
+  userInfo.append("lastName", lastName);
   userInfo.append("job", job);
   userInfo.append("age", age);
   userInfo.append("gender", gender);
@@ -132,6 +136,19 @@ const Register = () => {
             </CInputGroup>
 
 
+            <CFormLabel>성</CFormLabel>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilUser} />
+              </CInputGroupText>
+              <CFormInput
+                type="text"
+                placeholder="성을 입력하세요"
+                value={lastName}
+                onChange={(e) => {setLastName(e.target.value)}}
+              />
+            </CInputGroup>
+
             <CFormLabel>이름</CFormLabel>
             <CInputGroup className="mb-3">
               <CInputGroupText>
@@ -140,8 +157,8 @@ const Register = () => {
               <CFormInput
                 type="text"
                 placeholder="이름을 입력하세요"
-                value={name}
-                onChange={(e) => {setName(e.target.value)}}
+                value={firstName}
+                onChange={(e) => {setFirstName(e.target.value)}}
               />
             </CInputGroup>
 

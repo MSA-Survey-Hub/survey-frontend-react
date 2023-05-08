@@ -24,9 +24,16 @@ const FormControl = () => {
   const [groupDescription, setGroupDescription] = useState("");
 
   const registerGroup = async () => {
-    await axios.post(apiConfig.createGroup, groupDetail)
+    /* key 확인하기 */
+    for (let key of groupDetail.keys()) {
+      console.log(key, ": ", groupDetail.get(key));
+      if( key == "groupUserList"){
+        console.log(groupDetail.get(key).length)
+      }
+
+    }
+    await axios.post(apiConfig.createGroup,groupDetail)
       .then((response) => {
-        console.log("response: ",response)
         window.alert(response.data)
         window.location.replace("/#/group/list")
       }).catch((error) => {
@@ -52,8 +59,9 @@ const FormControl = () => {
   }
 
   const [groupUserList, setGroupUserList] = useState([]);
+
   const addGroupUser = (userId) => {
-    setGroupUserList({...groupUserList, userId});
+    setGroupUserList([...groupUserList, userId]);
   }
 
   const groupDetail = new FormData();
@@ -62,7 +70,7 @@ const FormControl = () => {
   groupDetail.append("groupDescription", groupDescription)
   groupDetail.append("groupUserList", groupUserList)
   groupDetail.append("regId",user.info.userId)
-  groupDetail.append("groupCnt", 1)
+  groupDetail.append("groupCnt", 0)
 
   const [alertVisible, setAlertVisible] = useState(false)
   const [alertColor, setAlertColor] = useState("")
@@ -71,7 +79,6 @@ const FormControl = () => {
 
 
   return (
-    console.log(searchUserList),
     <>
       <CAlert
         visible={alertVisible}
@@ -146,7 +153,7 @@ const FormControl = () => {
                   </CInputGroup>
 
                   <CListGroup className="mb-3 custom_height">
-                    {searchUserList?searchUserList.map((user) => (
+                    {searchUserList.length>0?searchUserList.map((user) => (
                       <CListGroupItem key={user.userId} className="d-flex">
                         <span>{user.name}({user.userId})</span>
                         <div className="ms-auto">
@@ -154,12 +161,12 @@ const FormControl = () => {
                             color="success"
                             size="sm"
                             variant="outline"
-                            onClick={addGroupUser(user.userId)}
+                            onClick={(e)=>addGroupUser(user.userId)}
                           >add
                           </CButton>
                         </div>
                       </CListGroupItem>
-                    )):<CListGroupItem><span>&nbsp;</span></CListGroupItem>}
+                    )):null}
                   </CListGroup>
                 </CCol>
 
@@ -169,20 +176,24 @@ const FormControl = () => {
                     <CListGroupItem active>선택된 사용자 목록</CListGroupItem>
                   </CListGroup>
                   <CListGroup className="mb-3 custom_height">
-                    {groupUserList?groupUserList.map((user) => (
-                      <CListGroupItem key={user.userId} className="d-flex">
-                        <span>{user.name}({user.userId})</span>
-                        <div className="ms-auto">
-                          <CButton
-                            color="danger"
-                            size="sm"
-                            variant="outline"
-                            // onClick= {setGroupUserList(groupUserList.filter((groupUserList) => groupUserList.userId !== user.userId))}
-                          >delete
-                          </CButton>
-                        </div>
-                      </CListGroupItem>
-                    )):null}
+                    {groupUserList.length===0?
+                      groupUserList.map(
+                        (user) => (
+                        <CListGroupItem key={user.userId} className="d-flex">
+                          <span>{user.name}({user.userId})</span>
+                          <div className="ms-auto">
+                            <CButton
+                              color="danger"
+                              size="sm"
+                              variant="outline"
+                              // onClick= {setGroupUserList(groupUserList.filter((groupUserList) => groupUserList.userId !== user.userId))}
+                            >delete
+                            </CButton>
+                          </div>
+                        </CListGroupItem>
+                      )
+                      )
+                    :null}
                   </CListGroup>
                 </CCol>
 

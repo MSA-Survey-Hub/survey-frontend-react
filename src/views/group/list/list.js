@@ -138,7 +138,6 @@ const Grouplist = () => {
     .then((response)=> {
       setPageData(pageData => ({...pageData, ...response.data, page: nowPage}))
       setGroupList(response.data.dtoList)
-
     })
 
   // useState && get
@@ -166,14 +165,14 @@ const Grouplist = () => {
 
   //그룹 삭제 api 호출
   const deleteGroup = (groupId) => {
-    axios.post(apiConfig.groupDelete,
+    axios.patch(apiConfig.groupDelete,
     {"groupId" : groupId},
     {
       headers: { "Content-Type": "multipart/form-data" }
     }).then((response) => {
       console.log("삭제 완료")
     }).catch((error) => {
-      //console.log(error);
+      console.log(error);
     })
   }
 

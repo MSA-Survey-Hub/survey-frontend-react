@@ -62,13 +62,12 @@ const SurveySearchList = () => {
       categoryOptionList.push({ value: option.surCatId, label: option.content });
     });
   }
-  
-
 
 // 설문 리스트
 const handleFetch = (selectedPage, title) => {
   setLoading(true);
-  axios.get(apiConfig.surveySearchList + "?category=10&page="+ selectedPage+"&title="+ title)
+  // axios.get(apiConfig.surveySearchList + "?category=10&page="+ selectedPage+"&title="+ title)
+  axios.get(apiConfig.surveySearchList + "?category_id=10&page="+ selectedPage)
   .then(response => {
     const data = response.data;
     setSurveyList(data.content);
