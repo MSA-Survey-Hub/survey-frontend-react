@@ -34,10 +34,6 @@ const GroupDetail = () => {
 
   }
 
-  const deleteGroup = () => {
-
-  }
-
   return (
     <CRow>
       <CCol xs={12}>
@@ -79,9 +75,11 @@ const GroupDetail = () => {
               <CRow className="mb-3">
                 <CFormLabel className="col-sm-3">그룹 설명</CFormLabel>
                 <div className="col-sm-9">
-                  <CFormTextarea>
-                    {groupDetail?groupDetail.groupDescription:null}
-                  </CFormTextarea>
+                  <CFormTextarea
+                  defaultValue={groupDetail?groupDetail.groupDescription:null}
+                  />
+                    
+   
                 </div>
               </CRow>
               <CRow className="mb-3">
@@ -116,9 +114,6 @@ const GroupDetail = () => {
           </CCardBody>
           <CCardFooter>
             <CCol lg={12} className="text-end d-flex">
-              <CButton color="danger" variant="outline" onClick={deleteGroup}>
-                delete
-              </CButton>
               <CButton color="success" className="ms-auto" variant="outline" onClick={modifyGroup}>
                 edit
               </CButton>
