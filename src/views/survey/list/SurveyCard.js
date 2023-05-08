@@ -23,6 +23,8 @@ import {
       }
     
       const SurveyDetailOnClickHandler = (e, link,sur_id) => {
+        console.log("survey Id: ",sur_id)
+        console.log("survey data: ", data)
         window.location.href = link+"/"+sur_id;
       }
 
@@ -41,7 +43,7 @@ import {
             </CCardText>
         </CCardBody>
         <CCardFooter>
-            <CButton color="primary" variant="outline" className="m-1" size="sm" onClick={(e) => SurveyDetailOnClickHandler(e, '#/survey/detail', data.surId)}>Details</CButton>
+            <CButton color="primary" variant="outline" className="m-1" size="sm" onClick={(e) => SurveyDetailOnClickHandler(e, '#/survey/detail', data.sur_id)}>Details</CButton>
             { data.statusName != "제작" ? (  <CButton color="warning" variant="outline" className="m-1" size="sm" onClick={(e) => DuplicateSurveyOnClickHandler(e, '#/survey/create',data.sur_id)}>Copy</CButton>):null}
             { data.statusName == "제작" ? (  <CButton color="success" variant="outline" className="m-1" size="sm">Edit</CButton>):null}
             { data.statusName == "제작" ? ( <CButton color="danger" variant="outline" className="m-1" size="sm">Remove</CButton>):null}

@@ -19,7 +19,6 @@ import {useSelector} from "react-redux";
 
 const FormControl = () => {
   const { user } = useSelector(({user})=> ({user:user.user}));
-
   const [groupName, setGroupName] = useState("");
   const [groupCode, setGroupCode] = useState("");
   const [groupDescription, setGroupDescription] = useState("");
@@ -27,6 +26,7 @@ const FormControl = () => {
   const registerGroup = async () => {
     await axios.post(apiConfig.createGroup, groupDetail)
       .then((response) => {
+        console.log("response: ",response)
         window.alert(response.data)
         window.location.replace("/#/group/list")
       }).catch((error) => {

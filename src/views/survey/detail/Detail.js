@@ -38,17 +38,20 @@ const Detail = () => {
   let questionList = [];
   let answerList = [];
   const [loading, response, error] = usePromise(() => {
+
+    console.log("sur_id: ", surId)
     return axios.post(apiConfig.surveyDetail,
       {sur_id: surId},
       {headers: { 'Content-Type': 'multipart/form-data'}
 }
     )
   }, []);
+  console.log("response: ",response)
 
   if(response != null){
     surInfo = response.data.info;
     questionList = response.data.question_list;
-    answerList = response.data.answer_list;
+    // answerList = response.data.answer_list;
   }
   let displayStatus = null;
   if(surInfo != null){
@@ -124,7 +127,6 @@ const Detail = () => {
             <CTabContent>
               <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
                 {answerList.length>0? <AnswerReadonlyInfo answerList={answerList}/> :<AnswerInfo questionList={questionList}/> }
-                
               </CTabPane>
 
               <CTabPane role="tabpanel" aria-labelledby="profile-tab" visible={activeKey === 2}>
