@@ -60,8 +60,9 @@ const FormControl = () => {
 
   const [groupUserList, setGroupUserList] = useState([]);
 
-  const addGroupUser = (userId) => {
-    setGroupUserList([...groupUserList, userId]);
+  const addGroupUser = (user) => {
+    console.log("groupUserList: ",groupUserList)
+    setGroupUserList([...groupUserList, user]);
   }
 
   const groupDetail = new FormData();
@@ -161,7 +162,7 @@ const FormControl = () => {
                             color="success"
                             size="sm"
                             variant="outline"
-                            onClick={(e)=>addGroupUser(user.userId)}
+                            onClick={(e)=>addGroupUser(user)}
                           >add
                           </CButton>
                         </div>
@@ -176,7 +177,7 @@ const FormControl = () => {
                     <CListGroupItem active>선택된 사용자 목록</CListGroupItem>
                   </CListGroup>
                   <CListGroup className="mb-3 custom_height">
-                    {groupUserList.length===0?
+                    {groupUserList.length>0?
                       groupUserList.map(
                         (user) => (
                         <CListGroupItem key={user.userId} className="d-flex">
