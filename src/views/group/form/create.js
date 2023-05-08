@@ -60,9 +60,9 @@ const FormControl = () => {
 
   const [groupUserList, setGroupUserList] = useState([]);
 
-  const addGroupUser = (user) => {
+  const addGroupUser = (userId) => {
     console.log("groupUserList: ",groupUserList)
-    setGroupUserList([...groupUserList, user]);
+    setGroupUserList([...groupUserList, userId]);
   }
 
   const groupDetail = new FormData();
@@ -162,7 +162,7 @@ const FormControl = () => {
                             color="success"
                             size="sm"
                             variant="outline"
-                            onClick={(e)=>addGroupUser(user)}
+                            onClick={(e)=>addGroupUser(user.userId)}
                           >add
                           </CButton>
                         </div>
@@ -179,15 +179,15 @@ const FormControl = () => {
                   <CListGroup className="mb-3 custom_height">
                     {groupUserList.length>0?
                       groupUserList.map(
-                        (user) => (
-                        <CListGroupItem key={user.userId} className="d-flex">
-                          <span>{user.name}({user.userId})</span>
+                        (userId) => (
+                        <CListGroupItem key={userId} className="d-flex">
+                          <span>{userId}</span>
                           <div className="ms-auto">
                             <CButton
                               color="danger"
                               size="sm"
                               variant="outline"
-                              // onClick= {setGroupUserList(groupUserList.filter((groupUserList) => groupUserList.userId !== user.userId))}
+                              onClick= {(e) => setGroupUserList(groupUserList.filter((groupUserList) => groupUserList.userId !== user.userId))}
                             >delete
                             </CButton>
                           </div>
