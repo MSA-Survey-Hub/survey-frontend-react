@@ -23,7 +23,8 @@ const apiConfig = {
     groupDelete : service.auth + version + '/group/delete',                                 // 사용자 그룹 삭제
     groupDetail : service.auth + version + '/group/detail',                                 // 사용자 그룹 상세 조회
     groupPrtcp : service.auth + version + '/group/participate',                             // 사용자 그룹 참여
-    createGroup : service.auth + version + '/group/reg',                               // 사용자 그룹 생성
+    createGroup : service.auth + version + '/group/reg',                                    // 사용자 그룹 생성
+    groupModify : service.auth + version + '/group/mod',
 
     signin : service.auth + version + '/auth/signin',                                       // 로그인
     refreshToken : service.auth + version + "/auth/refresh_token",                          // 토큰 리프레시

@@ -24,14 +24,6 @@ const FormControl = () => {
   const [groupDescription, setGroupDescription] = useState("");
 
   const registerGroup = async () => {
-    /* key 확인하기 */
-    for (let key of groupDetail.keys()) {
-      console.log(key, ": ", groupDetail.get(key));
-      if( key == "groupUserList"){
-        console.log(groupDetail.get(key).length)
-      }
-
-    }
     await axios.post(apiConfig.createGroup,groupDetail)
       .then((response) => {
         window.alert(response.data)
@@ -54,6 +46,7 @@ const FormControl = () => {
       keyword: keyword
     }},{headers: {"Content-Type" : "multipart/form-data"}})
       .then((response) => {
+        console.log("setSearchUserList: ",response.data)
         setSearchUserList(response.data)
       })
   }
@@ -76,7 +69,6 @@ const FormControl = () => {
   const [alertVisible, setAlertVisible] = useState(false)
   const [alertColor, setAlertColor] = useState("")
   const [alertMessage, setAlertMessage] = useState("")
-
 
 
   return (
