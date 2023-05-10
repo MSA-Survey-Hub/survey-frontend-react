@@ -46,12 +46,8 @@ const CreateQuestion = () => {
 
     // 답변 삭제
     function deleteAnswer({id, aid}) {
-      console.log({id, aid});
       dispatch(questionActions.deleteAnswer({id, aid}));
     }
-
-
-  // console.log(questions);
 
     
   const questionList = questions.map(question => 

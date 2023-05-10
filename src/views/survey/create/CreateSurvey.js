@@ -88,6 +88,11 @@ const CreateSurvey = () => {
     surveyParam.dueDt = surveyParam.dueDate+"T"+surveyParam.dueTime+":00";
 
     const questionDTOList = [];
+    const surveyTargetList = [];
+
+    selectedList._tail.array.forEach(function(user){
+      surveyTargetList.push(user.userId)
+    })
 
     questions._tail.array.forEach(function(question) {
       const map = Object.fromEntries(question);
@@ -103,21 +108,13 @@ const CreateSurvey = () => {
       questionDTOList.push(map);
     });
 
-    const surveyTargetList = [];
-    if(validated){
-      surveyParam.status = "I";
-      selectedList.forEach(function(member) {
-        surveyTargetList.push(member.userId);
-      });
-      
-    }
     const body ={ 
         "survey": surveyParam,
         "send_yn": validated? "Y":"N",
         "questionDTOList" : questionDTOList,
-        "surveyTargetDTOList" : surveyTargetList
+        "surveyTargetList" : surveyTargetList,
     };
-    console.log(body);
+
     setLoading(true);
     try {
       axios.post(apiConfig.createSurvey, body, {headers: headers})
