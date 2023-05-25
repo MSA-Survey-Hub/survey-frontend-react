@@ -38,12 +38,9 @@ const Detail = () => {
   let questionList = [];
   let answerList = [];
   const [loading, response, error] = usePromise(() => {
-
-    console.log("sur_id: ", surId)
     return axios.post(apiConfig.surveyDetail,
       {sur_id: surId},
-      {headers: { 'Content-Type': 'multipart/form-data'}
-}
+      {headers: { 'Content-Type': 'multipart/form-data'}}
     )
   }, []);
   console.log("response: ",response)
