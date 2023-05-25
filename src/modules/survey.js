@@ -66,7 +66,7 @@ const initialState = Map({
     isAnnoyYn : "N",
     description : "",
     version : 1,
-    status : "P"
+    status : "I" // 처음 배포 상태 표기
 });
 
 
