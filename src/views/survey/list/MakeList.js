@@ -75,11 +75,11 @@ const MakeList = () => {
   // 설문 리스트
   const handleFetch = (selectedPage, title) => {
     setLoading(true);
-
-    axios.get(apiConfig.surveyMakeList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title, 
+    axios.get(apiConfig.surveyMakeList + "?categoryId="+1+"&page="+1, 
     {headers: {'Authorization': 'Bearer ' + accessToken }})
     .then(response => {
       const data = response.data;
+      console.log("생성 리스트: ",response.data)
       setSurveyList(data.content);
       setPageData({
       totalPage: 0,

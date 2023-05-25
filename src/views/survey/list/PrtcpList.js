@@ -23,8 +23,6 @@ import SurveyCard from './SurveyCard';
 const PrtcpList = () => {
   const { user } = useSelector(({user})=> ({user:user.user}));
   const accessToken = user.token.access_token;
-
-
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [surveyList, setSurveyList] = useState([]);
@@ -75,6 +73,7 @@ const PrtcpList = () => {
     axios.get(apiConfig.surveyParticipateList + "?category="+getSelectedCategory()+"&page="+ selectedPage+"&title="+ title,
     {headers: {'Authorization': 'Bearer ' + accessToken }})
     .then(response => {
+      console.log("참여 리스트: ",response.data)
       const data = response.data;
       setSurveyList(data.content);
       setPageData({

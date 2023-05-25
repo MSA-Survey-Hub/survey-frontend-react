@@ -66,9 +66,11 @@ const SurveySearchList = () => {
 // 설문 리스트
 const handleFetch = (selectedPage, title) => {
   setLoading(true);
+  console.log(apiConfig.surveySearchList + "?category_id=10&page="+ selectedPage)
   axios.get(apiConfig.surveySearchList + "?category_id=10&page="+ selectedPage)
   .then(response => {
     const data = response.data;
+    console.log("설문 검색 데이터: ",data)
     setSurveyList(data.content);
     setPageData({
     totalPage: 0,
